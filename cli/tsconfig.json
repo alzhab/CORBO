@@ -1,0 +1,24 @@
+{
+    "compilerOptions": {
+        "outDir": "./dist/",
+        "sourceMap": true,
+        "strict": true,
+        "noImplicitReturns": true,
+        "noImplicitAny": true,
+        "module": "es6",
+        "moduleResolution": "node",
+        "target": "es2015",
+        "allowJs": true,
+        "lib": ["ESNext", "dom"],
+        "types": ["reflect-metadata"],
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "allowSyntheticDefaultImports": true,
+    },
+    "include": [
+        "./src/**/*"
+    ],
+    "exclude": [
+        "templates"
+    ]
+}

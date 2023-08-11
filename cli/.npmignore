@@ -1,0 +1,12 @@
+.idea
+/src
+node_modules
+/templates
+/webpack.config.js
+/tsconfig.json
+/.prettierrc.js
+/.eslintrc.js
+/.eslintignore
+/.babelrc
+/alzhan-rncore-commands-*
+/UML

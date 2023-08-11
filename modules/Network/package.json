@@ -1,0 +1,19 @@
+{
+  "name": "@corbo/modules/network",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alzhab/rncore-network-module.git"
+  },
+  "author": "alzhan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alzhab/rncore-network-module/issues"
+  },
+  "homepage": "https://github.com/alzhab/rncore-network-module#readme"
+}
