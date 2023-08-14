@@ -13,7 +13,7 @@
     "clean": "rm dist/bundle.js",
     "build": "webpack --mode=production && npm pack && npm publish",
     "ex-pack": "webpack --mode=production && npm pack",
-    "ex": "webpack --mode=production && copyfiles -u 1 \"dist/**/*\" ../../QuizNew/node_modules/@corbo/cli/dist",
+    "ex": "webpack --mode=production && copyfiles -u 1 \"dist/**/*\" ../../quiz/node_modules/@corbo/cli/dist",
     "start": "node dist/bundle.js"
   },
   "dependencies": {

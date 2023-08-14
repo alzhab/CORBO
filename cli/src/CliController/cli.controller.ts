@@ -47,12 +47,15 @@ export class CliController implements ICliController {
     [ECliVariants.Generators]: ['generators', 'generator', 'g', 'gen'],
   }
 
-  async rnc(options: string[]) {
-    await this.initializationCheck(async () => {
-      this.base.lintProjectFiles()
-      const variant = await this.getChoosedVariant(options)
-      await this.calls[variant](options.slice(1))
-      this.base.lintProjectFiles()
+  rnc(options: string[]) {
+    return this.initializationCheck(() => {
+      return this.getChoosedVariant(options)
+        .then(variant => {
+          return this.calls[variant](options.slice(1))
+        })
+        .then(() => {
+          this.base.lintProjectFiles()
+        })
     })
   }
 
