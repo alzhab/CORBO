@@ -1,0 +1,76 @@
+/* Title */
+
+box-sizing: border-box;
+
+position: relative;
+width: 163px;
+height: 124px;
+
+border: 1px dashed #9747FF;
+border-radius: 5px;
+
+
+/* type=Default */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px 16px;
+gap: 8px;
+
+position: absolute;
+width: 123px;
+height: 32px;
+left: 20px;
+top: 20px;
+
+background: rgba(255, 255, 255, 0.15);
+border-radius: 200px;
+
+
+/* Победители */
+
+width: 91px;
+height: 19px;
+
+font-family: 'Gilroy-Medium';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 19px;
+
+color: #FFFFFF;
+
+
+/* type=Variant2 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px 16px;
+gap: 8px;
+
+position: absolute;
+width: 123px;
+height: 32px;
+left: 20px;
+top: 72px;
+
+background: #DCFF51;
+border-radius: 200px;
+
+
+/* Победители */
+
+width: 91px;
+height: 19px;
+
+font-family: 'Gilroy-Medium';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 19px;
+
+color: #000000;

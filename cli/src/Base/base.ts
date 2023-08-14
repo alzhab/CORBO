@@ -203,7 +203,9 @@ export class Base implements IBase {
       const svg = regexResults
         .replace(/(<svg(.*)">)|<\/svg>/g, '')
         // Replace path to Path
-        .replace(/(?<=<)(.*?)(?= )/g, item => this.toUpperCase(item))
+        .replace(/(?<=<)(.*?)(?=[\s|>])|(?<=<\/)(.*?)(?=>)/g, item =>
+          this.toUpperCase(item),
+        )
         // Replace fill-path to fillPath
         .replace(/-(.*?)(?==)/g, input =>
           this.toUpperCase(input.replace('-', '')),
