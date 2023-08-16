@@ -42,7 +42,7 @@ export class NetworkModule implements INetworkModule {
     const type = await inquirer
       .prompt([
         {
-          message: 'Network Type: ',
+          message: 'Network Type:',
           choices: (
             Object.keys(ENetworkType) as Array<keyof typeof ENetworkType>
           ).map(key => ({

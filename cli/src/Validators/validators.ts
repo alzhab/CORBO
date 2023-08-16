@@ -75,16 +75,16 @@ export class Validators implements IValidators {
       .prompt([
         {
           type: 'input',
-          message: 'Event description: ',
+          message: 'Event description:',
           name: 'name',
         },
       ])
-      .then(res => this.removeSuffix(res.name))
+      .then(res => res.name)
 
     return {
       name,
       transformedName: name.replaceAll(' ', '_').toUpperCase(),
-      functionName: this.toCamelCase('on ' + name),
+      functionName: this.toCamelCase('on ' + name.replace(/on/gi, '')),
     }
   }
 

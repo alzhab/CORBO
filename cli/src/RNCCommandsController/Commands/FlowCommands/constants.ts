@@ -24,7 +24,7 @@ export const FLOW_CREATE_EVENT: (
   },
   {
     path: FLOW_FOLDER_PATH + '/flow.ts',
-    text: `${functionName}(){}`,
+    text: `${functionName}(){this.appEventsStore.removeEvent()}`,
     searchRegex: /onAppInit\(\) \{/,
     type: 'before',
   },
