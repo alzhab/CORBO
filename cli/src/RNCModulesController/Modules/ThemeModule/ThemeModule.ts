@@ -12,13 +12,13 @@ export class ThemeModule implements IThemeModule {
   async init(): Promise<void> {
     this.generateFiles()
 
-    this.base.installDependencies(THEME_DEPENDENCIES)
+    await this.base.installDependencies(THEME_DEPENDENCIES)
 
     this.base.insertoIntoProjectFile(THEME_BIND)
 
-    this.base.syncAssets()
+    await this.base.syncAssets()
 
-    this.base.installPods()
+    await this.base.installPods()
   }
 
   generateFiles() {

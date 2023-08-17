@@ -16,6 +16,10 @@ import {
   RNCCommandsControllerId,
 } from '../RNCCommandsController'
 import { IRNCUILibs, RNCUILibsId } from '../RNCUILibs'
+import {
+  IRNCGeneratorsController,
+  RNCGeneratorsControllerId,
+} from '../RNCGeneratorsController'
 
 export const CliControllerId = Symbol('CliControllerId')
 
@@ -25,6 +29,8 @@ export class CliController implements ICliController {
     @inject(ValidatorsId) private validators: IValidators,
     @inject(BaseId) private base: IBase,
     @inject(RNCBaseControllerId) private RNCBaseController: IRNCBaseController,
+    @inject(RNCGeneratorsControllerId)
+    private RNCGeneratorsController: IRNCGeneratorsController,
     @inject(RNCModulesControllerId)
     private RNCModulesController: IRNCModulesController,
     @inject(RNCCommandsControllerId)
@@ -36,7 +42,8 @@ export class CliController implements ICliController {
   calls: { [key in ECliVariants]: (params: string[]) => void } = {
     [ECliVariants.Commands]: params => this.RNCCommandsController.init(params),
     [ECliVariants.Modules]: () => this.RNCModulesController.init(),
-    [ECliVariants.Generators]: () => console.log('In progress...'),
+    [ECliVariants.Generators]: params =>
+      this.RNCGeneratorsController.init(params),
     [ECliVariants.UILibs]: () => this.RNCUILibs.init(),
   }
 

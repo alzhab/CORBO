@@ -75,13 +75,13 @@ export class NetworkModule implements INetworkModule {
 
     this.base.copyToProject(NETWORK_MODULE_INSERT_AXIOS)
     this.base.insertoIntoProjectFile(NETWORK_MODULE_BIND_AXIOS)
-    this.base.installDependencies(NETWORK_MODULE_DEPENDENCIES_AXIOS)
+    await this.base.installDependencies(NETWORK_MODULE_DEPENDENCIES_AXIOS)
     this.base.updateEnv({ SERVER_URL: 'http:example-api.com' })
   }
 
   async installMockModule() {
     this.base.copyToProject(NETWORK_MODULE_INSERT_MOCK)
     this.base.insertoIntoProjectFile(NETWORK_MODULE_BIND_MOCK)
-    this.base.installDependencies(NETWORK_MODULE_DEV_DEPENDENCIES_MOCK)
+    await this.base.installDependencies(NETWORK_MODULE_DEV_DEPENDENCIES_MOCK)
   }
 }

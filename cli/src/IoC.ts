@@ -12,6 +12,7 @@ import { Base, BaseId, IBase } from './Base'
 import { bindModules } from './RNCModulesController/binder'
 import { bindCommands } from './RNCCommandsController'
 import { bindUILibs } from './RNCUILibs'
+import { bindGenerators } from './RNCGeneratorsController'
 
 const container = new Container({ defaultScope: 'Singleton' })
 
@@ -23,6 +24,7 @@ container.bind<ICliController>(CliControllerId).to(CliController)
 
 bindModules(container)
 bindCommands(container)
+bindGenerators(container)
 bindUILibs(container)
 
 export default container

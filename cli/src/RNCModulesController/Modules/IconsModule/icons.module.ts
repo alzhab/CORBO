@@ -34,7 +34,7 @@ export class IconsModule implements IIconsModule {
     await this.spacingPropsModule.checkInstall()
 
     if (!this.validators.getIsDependenciesExist(ICONS_MODULE_DEPENDENCIES)) {
-      this.base.installDependencies(ICONS_MODULE_DEPENDENCIES)
+      await this.base.installDependencies(ICONS_MODULE_DEPENDENCIES)
     }
 
     const files = shell

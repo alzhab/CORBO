@@ -1,3 +1,3 @@
 export interface IFlowCommands {
-  init(): Promise<void>
+  init(params: string[]): Promise<void>
 }

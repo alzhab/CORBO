@@ -15,7 +15,7 @@ export class SpacingPropsModule implements ISpacingPropsModule {
   ) {}
 
   async init(): Promise<void> {
-    this.base.installDependencies(SPACING_PROPS_DEPENDENCIES)
+    await this.base.installDependencies(SPACING_PROPS_DEPENDENCIES)
   }
 
   async checkInstall(): Promise<boolean> {

@@ -18,6 +18,16 @@ export const BaseId = Symbol.for('BaseId')
 
 @injectable()
 export class Base implements IBase {
+  execAsync(cmd: string, opts = {}) {
+    return new Promise(function (resolve, reject) {
+      // Execute the command, reject if we exit non-zero (i.e. error)
+      shell.exec(cmd, opts, function (code, stdout, stderr) {
+        if (code != 0) return reject(new Error(stderr))
+        return resolve(stdout)
+      })
+    })
+  }
+
   spinner() {
     const spinner = cliSpinners.material
     let i = 0
@@ -30,21 +40,21 @@ export class Base implements IBase {
     return () => clearInterval(interval)
   }
 
-  installPods() {
-    shell.exec('npx pod-install', { silent: true })
-    shell.exec('watchman watch-del-all', { silent: true })
+  async installPods() {
+    await this.execAsync('npx pod-install', { silent: true })
+    await this.execAsync('watchman watch-del-all', { silent: true })
   }
 
-  installDependencies(libs: string[], dev?: boolean): void {
-    shell.exec(
+  async installDependencies(libs: string[], dev?: boolean) {
+    await this.execAsync(
       `npm i -s ${dev ? '--save-dev' : ''} ${libs.join(
         ' ',
       )} --legacy-peer-deps`,
     )
   }
 
-  syncAssets() {
-    shell.exec('npx react-native-asset', { silent: true })
+  async syncAssets() {
+    await this.execAsync('npx react-native-asset', { silent: true })
   }
 
   copyToProject(data: ICopyToProject[]): void {
@@ -162,7 +172,7 @@ export class Base implements IBase {
   }
 
   isInProjectExist(path: string): boolean {
-    return fs.existsSync(PROJECT_PATH + path)
+    return fs.existsSync(PROJECT_PATH + path.replace(PROJECT_PATH, ''))
   }
 
   getAppName() {
@@ -180,10 +190,8 @@ export class Base implements IBase {
     })
   }
 
-  lintProjectFiles(): void {
-    setTimeout(() => {
-      shell.exec('npm run lint -- --fix', { silent: true })
-    }, 1000)
+  async lintProjectFiles() {
+    await this.execAsync('npm run lint -- --fix', { silent: true })
   }
 
   isFolderEmptyInProject(path: string): boolean {

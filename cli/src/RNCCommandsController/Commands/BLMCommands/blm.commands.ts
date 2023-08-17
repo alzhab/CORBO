@@ -18,8 +18,11 @@ export class BlmCommands implements IBlmCommands {
     @inject(ValidatorsId) private validators: IValidators,
     @inject(BaseId) private base: IBase,
   ) {}
-  async init(): Promise<void> {
-    const { fileName, folderName } = await this.validators.getValidName('blm')
+  async init(params: string[]): Promise<void> {
+    const { fileName, folderName } = await this.validators.getValidName(
+      'blm',
+      params,
+    )
     const folderPath = BLM_FOLDER_PATH + '/' + folderName
 
     if (this.base.isInProjectExist(folderPath)) {

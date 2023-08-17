@@ -25,19 +25,19 @@ export class SplashScreenModule implements ISplashScreenModule {
 
   async init(): Promise<void> {
     this.generateFiles()
-    this.installPackages()
+    await this.installPackages()
     await this.runAndroidLaunchScreen(SPLASH_SCREEN_IMAGE_PATH)
     await this.runIosLaunchScreen(
       SPLASH_SCREEN_IMAGE_PATH,
       this.base.getAppName(),
     )
-    this.base.installPods()
+    await this.base.installPods()
   }
-  installPackages() {
+  async installPackages() {
     if (
       !this.validators.getIsDependenciesExist(['react-native-splash-screen'])
     ) {
-      this.base.installDependencies(['react-native-splash-screen'])
+      await this.base.installDependencies(['react-native-splash-screen'])
       this.dependencyConfiguration()
     }
   }

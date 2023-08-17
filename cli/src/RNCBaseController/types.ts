@@ -1,3 +1,3 @@
 export interface IRNCBaseController {
-  init(): void
+  init(): Promise<void>
 }

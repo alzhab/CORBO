@@ -12,8 +12,8 @@ export class FlowCommands implements IFlowCommands {
     @inject(BaseId) private base: IBase,
     @inject(ValidatorsId) private validators: IValidators,
   ) {}
-  async init(): Promise<void> {
-    const data = await this.validators.getValidEventName()
+  async init(params: string[]): Promise<void> {
+    const data = await this.validators.getValidEventName(params)
     this.base.insertoIntoProjectFile(FLOW_CREATE_EVENT(data))
   }
 }

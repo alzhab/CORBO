@@ -14,7 +14,8 @@
     "build": "webpack --mode=production && npm pack && npm publish",
     "ex-pack": "webpack --mode=production && npm pack",
     "ex": "webpack --mode=production && copyfiles -u 1 \"dist/**/*\" ../../quiz/node_modules/@corbo/cli/dist",
-    "start": "node dist/bundle.js"
+    "start": "node dist/bundle.js",
+    "lint": "eslint ."
   },
   "dependencies": {
     "@types/node": "^20.3.1",

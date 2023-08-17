@@ -18,9 +18,10 @@ export class ServiceCommands implements IServiceCommands {
     @inject(ValidatorsId) private validators: IValidators,
     @inject(BaseId) private base: IBase,
   ) {}
-  async init(): Promise<void> {
+  async init(params: string[]): Promise<void> {
     const { fileName, folderName } = await this.validators.getValidName(
       'service',
+      params,
     )
     const folderPath = SERVICE_FOLDER_PATH + '/' + folderName
 

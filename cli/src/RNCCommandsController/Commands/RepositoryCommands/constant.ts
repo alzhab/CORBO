@@ -8,12 +8,13 @@ import {
   REPOSITORY_TYPE_TEMPLATE,
 } from '../../../../templates/Commands/RepositoriesCommands/constants'
 import { ITemplateProps } from '../../../types'
+import { IReposCreateFileTemplateProps } from './types'
 
 export const REPOSITORY_FOLDER_PATH = '/src/Instruments/repositories'
 
 export const REPOSITORY_CREATE_FILES: (
-  data: ITemplateProps,
-) => ICreateFileInProject[] = (data: ITemplateProps) => [
+  data: IReposCreateFileTemplateProps,
+) => ICreateFileInProject[] = data => [
   {
     path: data.folderPath + '/' + data.fileName + '.ts',
     content: REPOSITORY_FILE_TEMPLATE(data),
@@ -34,7 +35,7 @@ export const REPOSITORY_BIND_CONFIGURATION: (
   folderName,
   folderPath,
   fileName,
-}: ITemplateProps) => [
+}) => [
   {
     path: REPOSITORY_FOLDER_PATH + '/' + 'index.ts',
     text: `import { I${folderName}, ${folderName}Id, ${folderName} } from 'repositories/${folderName}'\n`,

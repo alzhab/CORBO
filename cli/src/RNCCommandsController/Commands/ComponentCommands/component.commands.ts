@@ -15,9 +15,12 @@ export class ComponentCommands implements IComponentCommands {
     @inject(ValidatorsId) private validators: IValidators,
     @inject(BaseId) private base: IBase,
   ) {}
-  async init(): Promise<void> {
+  async init(params: string[]): Promise<void> {
     const type = await this.getType()
-    const { fileName, folderName } = await this.validators.getValidName()
+    const { fileName, folderName } = await this.validators.getValidName(
+      '',
+      params,
+    )
     const folderPath = COMPONENT_FOLDER_PATH + '/' + type + '/' + folderName
 
     if (this.base.isInProjectExist(folderPath)) {

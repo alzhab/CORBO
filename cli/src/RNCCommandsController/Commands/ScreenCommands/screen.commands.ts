@@ -13,9 +13,10 @@ export class ScreenCommands implements IScreenCommands {
     @inject(ValidatorsId) private validators: IValidators,
   ) {}
 
-  async init(): Promise<void> {
+  async init(params: string[]): Promise<void> {
     const { name, folderName, fileName } = await this.validators.getValidName(
       'screen',
+      params,
     )
 
     this.base.createFolderInProject(SCREEN_FOLDER_PATH + '/' + folderName)

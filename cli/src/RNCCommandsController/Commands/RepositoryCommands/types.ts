@@ -1,3 +1,10 @@
+import { IEndpoint } from '../../../RNCGeneratorsController/API'
+import { ITemplateProps } from '../../../types'
+
 export interface IRepositoryCommands {
-  init(): Promise<void>
+  init(params: string[], endpoints: IEndpoint[]): Promise<void>
+}
+
+export type IReposCreateFileTemplateProps = ITemplateProps & {
+  endpoints: IEndpoint[]
 }

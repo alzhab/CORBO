@@ -20,7 +20,7 @@ export class BootModule implements IBootModule {
 
   async init(): Promise<void> {
     const stop = this.base.spinner()
-    this.base.installDependencies(BOOT_MODULE_DEPENDENCIES)
+    await this.base.installDependencies(BOOT_MODULE_DEPENDENCIES)
     this.base.copyToProject(BOOT_MODULE_CONFIG)
     this.base.insertoIntoProjectFile([
       ...BOOT_MODULE_BIND,

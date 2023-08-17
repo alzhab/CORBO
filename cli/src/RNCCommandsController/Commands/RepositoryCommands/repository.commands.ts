@@ -9,6 +9,7 @@ import {
   REPOSITORY_CREATE_FILES,
   REPOSITORY_FOLDER_PATH,
 } from './constant'
+import { IEndpoint } from '../../../RNCGeneratorsController/API'
 
 export const RepositoryCommandsId = Symbol.for('RepositoryCommands')
 
@@ -18,8 +19,11 @@ export class RepositoryCommands implements IRepositoryCommands {
     @inject(ValidatorsId) private validators: IValidators,
     @inject(BaseId) private base: IBase,
   ) {}
-  async init(): Promise<void> {
-    const { fileName, folderName } = await this.validators.getValidName('repo')
+  async init(params: string[], endpoints: IEndpoint[] = []): Promise<void> {
+    const { fileName, folderName } = await this.validators.getValidName(
+      'repo',
+      params,
+    )
     const folderPath = REPOSITORY_FOLDER_PATH + '/' + folderName
 
     if (this.base.isInProjectExist(folderPath)) {
@@ -31,7 +35,7 @@ export class RepositoryCommands implements IRepositoryCommands {
 
     this.base.createFolderInProject(folderPath)
     this.base.createFilesInProject(
-      REPOSITORY_CREATE_FILES({ fileName, folderPath, folderName }),
+      REPOSITORY_CREATE_FILES({ fileName, folderPath, folderName, endpoints }),
     )
     this.base.insertoIntoProjectFile(
       REPOSITORY_BIND_CONFIGURATION({ fileName, folderPath, folderName }),

@@ -21,7 +21,7 @@ export class RNCbaseController implements IRNCBaseController {
     @inject(BaseId) private base: IBase,
   ) {}
 
-  init(): void {
+  async init() {
     this.base.copyToProject(
       TEMPLATE_PATHES.map(item => ({
         pathFrom: RNCBASE_TEMPLATE_PATH + item,
@@ -30,10 +30,10 @@ export class RNCbaseController implements IRNCBaseController {
       })),
     )
 
-    this.base.installDependencies(RNCBASE_DEPENDENCIES)
-    this.base.installDependencies(RNCBASE_DEV_DEPENDENCIES, true)
+    await this.base.installDependencies(RNCBASE_DEPENDENCIES)
+    await this.base.installDependencies(RNCBASE_DEV_DEPENDENCIES, true)
     this.dependenciesConfiguration()
-    this.base.installPods()
+    await this.base.installPods()
     shell.exec('clear')
     console.log(
       chalk.green('Please, Set eslint and prettier in IDLE settings '),

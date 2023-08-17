@@ -15,8 +15,6 @@ import {
   ComponentCommandsId,
   IComponentCommands,
 } from './Commands/ComponentCommands'
-import { EModules } from '../RNCModulesController'
-import { ECliVariants } from '../CliController'
 
 export const RNCCommandsControllerId = Symbol.for('RNCCommandsControllerId')
 
@@ -35,19 +33,19 @@ export class RNCCommandsController implements IRNCCommandsController {
     private componentCommands: IComponentCommands,
   ) {}
 
-  commands: { [key in ECommands]: () => void } = {
+  commands: { [key in ECommands]: (params: string[]) => void } = {
     // BusinessLogic
-    [ECommands.Flow]: () => this.flowCommands.init(),
-    [ECommands.Blm]: () => this.blmCommands.init(),
-    [ECommands.Store]: () => this.storeCommands.init(),
+    [ECommands.Flow]: params => this.flowCommands.init(params),
+    [ECommands.Blm]: params => this.blmCommands.init(params),
+    [ECommands.Store]: params => this.storeCommands.init(params),
 
     // UI
-    [ECommands.Component]: () => this.componentCommands.init(),
-    [ECommands.Screen]: () => this.screenCommands.init(),
+    [ECommands.Component]: params => this.componentCommands.init(params),
+    [ECommands.Screen]: params => this.screenCommands.init(params),
 
     // Instruments
-    [ECommands.Repository]: () => this.repositoryCommands.init(),
-    [ECommands.Service]: () => this.serviceCommands.init(),
+    [ECommands.Repository]: params => this.repositoryCommands.init(params, []),
+    [ECommands.Service]: params => this.serviceCommands.init(params),
   }
 
   disabledCommands: { [key in ECommands]: boolean } = {
@@ -82,7 +80,7 @@ export class RNCCommandsController implements IRNCCommandsController {
   async init(params: string[]) {
     const command = await this.getChoosedCommand(params)
 
-    await this.commands[command]()
+    await this.commands[command](params.slice(1))
   }
 
   getChoosedCommand(options: string[]): Promise<ECommands> {

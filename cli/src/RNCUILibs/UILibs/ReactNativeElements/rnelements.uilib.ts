@@ -14,7 +14,7 @@ export class ReactNativeElements implements IReactNativeElements {
   ) {}
 
   async init(): Promise<void> {
-    this.base.installDependencies([
+    await this.base.installDependencies([
       '@rneui/themed',
       '@rneui/base',
       'react-native-vector-icons',

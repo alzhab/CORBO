@@ -17,7 +17,7 @@ export class AppIconModule implements IAppIconModule {
     this.generateFiles()
     await this.runAndroid(APP_ICON_PATH)
     await this.runIos(APP_ICON_PATH, this.base.getAppName())
-    this.base.installPods()
+    await this.base.installPods()
   }
 
   generateFiles() {

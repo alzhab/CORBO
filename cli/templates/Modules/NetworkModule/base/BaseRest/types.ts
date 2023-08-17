@@ -31,3 +31,13 @@ export interface IGetErrorValue {
 }
 
 export type IResponse<D> = Promise<{ data: D }>
+
+export type IRequestParams<
+  path = undefined,
+  query = undefined,
+  body = undefined,
+> = {
+  path?: path
+  query?: query
+  body?: body
+}

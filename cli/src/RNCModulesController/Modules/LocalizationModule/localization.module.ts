@@ -22,7 +22,7 @@ export class LocalizationModule implements ILocalizationModule {
 
   async init(): Promise<void> {
     const stop = this.base.spinner()
-    this.base.installDependencies(LOCALIZATION_MODULE_DEPENDENCIES)
+    await this.base.installDependencies(LOCALIZATION_MODULE_DEPENDENCIES)
     this.base.copyToProject(LOCALIZATION_MODULE_CONFIG)
     this.base.insertoIntoProjectFile(LOCALIZATION_MODULE_BIND)
     stop()

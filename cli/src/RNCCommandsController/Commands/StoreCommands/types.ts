@@ -1,3 +1,3 @@
 export interface IStoreCommands {
-  init(): Promise<void>
+  init(params: string[]): Promise<void>
 }

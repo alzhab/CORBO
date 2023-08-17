@@ -18,8 +18,11 @@ export class StoreCommands implements IStoreCommands {
     @inject(ValidatorsId) private validators: IValidators,
     @inject(BaseId) private base: IBase,
   ) {}
-  async init(): Promise<void> {
-    const { fileName, folderName } = await this.validators.getValidName('store')
+  async init(params: string[]): Promise<void> {
+    const { fileName, folderName } = await this.validators.getValidName(
+      'store',
+      params,
+    )
     const folderPath = STORE_FOLDER_PATH + '/' + folderName
 
     if (this.base.isInProjectExist(folderPath)) {

@@ -46,7 +46,17 @@ export class Validators implements IValidators {
     return input ? input.charAt(0).toUpperCase() + input.slice(1) : ''
   }
 
-  async getValidName(suffix?: string): Promise<IValideName> {
+  async getValidName(suffix?: string, params?: string[]): Promise<IValideName> {
+    if (params && params[0]) {
+      const name = params[0]
+
+      return {
+        name,
+        folderName: this.toUpperCase(name) + this.toUpperCase(suffix),
+        fileName: suffix ? name + '.' + suffix.toLowerCase() : name,
+      }
+    }
+
     const name = await inquirer
       .prompt([
         {
@@ -70,7 +80,17 @@ export class Validators implements IValidators {
     })
   }
 
-  async getValidEventName(): Promise<IValideEventName> {
+  async getValidEventName(params?: string[]): Promise<IValideEventName> {
+    if (params && params[0]) {
+      const name = params[0]
+
+      return {
+        name,
+        transformedName: name.replaceAll(' ', '_').toUpperCase(),
+        functionName: this.toCamelCase('on ' + name.replace(/on/gi, '')),
+      }
+    }
+
     const name = await inquirer
       .prompt([
         {

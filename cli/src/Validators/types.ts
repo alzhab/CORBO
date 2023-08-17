@@ -8,8 +8,8 @@ export interface IValidators {
   isBootModuleInitialized: boolean
   isLocalizationModuleInitialized: boolean
   getIsDependenciesExist(list: string[]): boolean
-  getValidName(suffix?: string): Promise<IValideName>
-  getValidEventName(): Promise<IValideEventName>
+  getValidName(suffix?: string, params?: string[]): Promise<IValideName>
+  getValidEventName(params?: string[]): Promise<IValideEventName>
   getValidIconName(input: string): string
 }
 
