@@ -19,9 +19,18 @@ export class StoreCommands implements IStoreCommands {
     @inject(BaseId) private base: IBase,
   ) {}
   async init(params: string[]): Promise<void> {
+    if (params[0]) {
+      const names = params[0].split(',')
+      return Promise.all(names.map(this.createStore.bind(this))).then()
+    } else {
+      return this.createStore()
+    }
+  }
+
+  async createStore(name?: string) {
     const { fileName, folderName } = await this.validators.getValidName(
       'store',
-      params,
+      name,
     )
     const folderPath = STORE_FOLDER_PATH + '/' + folderName
 
@@ -29,7 +38,7 @@ export class StoreCommands implements IStoreCommands {
       console.log(
         chalk.red(`ERROR: STORE with name ${folderName} already exist`),
       )
-      shell.exit()
+      return
     }
 
     this.base.createFolderInProject(folderPath)

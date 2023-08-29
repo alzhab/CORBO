@@ -1,16 +1,9 @@
-import { EAppEvents, IAppFlow } from './types'
-import { inject, injectable } from 'inversify'
-import { autorun } from 'mobx'
-import {
-  AppEventsBlmId,
-  AppEventsStoreId,
-  IAppEventsBlm,
-  IAppEventsStore,
-} from '@alzhan/rncore-base/AppEventsModule'
-import {
-  IInitialRouteBlm,
-  InitialRouteBlmId,
-} from '@alzhan/rncore-base/NavigationModule'
+import {EAppEvents, IAppFlow, IFlows} from './types';
+import {inject, injectable} from 'inversify';
+import {autorun} from 'mobx';
+import Splashscreen from 'react-native-splash-screen';
+import {AppEventsBlmId, AppEventsStoreId, IAppEventsBlm, IAppEventsStore} from '@corbo/base/AppEventsModule';
+import {IInitialRouteBlm, InitialRouteBlmId} from '@corbo/base/NavigationModule';
 
 export const AppFlowId = Symbol.for('Flow')
 
@@ -21,26 +14,36 @@ export class Flow implements IAppFlow {
     @inject(AppEventsBlmId) private appEventBlm: IAppEventsBlm,
     @inject(InitialRouteBlmId) private initialRouteBlm: IInitialRouteBlm,
   ) {}
-
+  
   init() {
-    autorun(() => {
-      const eventName = this.appEventsStore.event?.key
-      if (eventName) {
-        this.flows[eventName]()
-      }
-    })
+    autorun(
+      () => {
+        const event = this.appEventsStore.event
+        if (event?.key) {
+          console.log({ event })
+          this.appEventsStore.removeEvent()
+          const func = this.flows[event.key].bind(this) as any
+          func(event.data)
+        }
+      },
+      {
+        onError: error => {
+          console.log(JSON.stringify(error, null, 2))
+        },
+      },
+    )
+    
+    this.appEventBlm.emitEvent({ event: EAppEvents.APP_INIT })
   }
-
-  get flows(): { [key in EAppEvents]: () => void } {
+  
+  get flows(): IFlows {
     return {
-      [EAppEvents.APP_INIT]: this.onAppInit.bind(this),
+      [EAppEvents.APP_INIT]: this.onAppInit,
     }
   }
-
+  
   onAppInit() {
-    setTimeout(() => {
-      this.initialRouteBlm.setInitialRouteName('HomeScreen')
-      this.appEventsStore.removeEvent()
-    }, 3000)
+    Splashscreen.hide()
+    this.appEventsStore.setIsAppInitialized(true)
   }
 }

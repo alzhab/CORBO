@@ -1,4 +1,4 @@
-import { ColorsNames } from '@alzhan/rncore-theme-module'
+import { ColorsNames } from '@corbo/modules/theme'
 
 export interface IImages {}
 

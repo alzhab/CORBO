@@ -58,6 +58,22 @@ export class AppIconModule implements IAppIconModule {
     const mipmapXxhdpi = androidResPath + 'mipmap-xxhdpi/ic_launcher.png'
     const mipmapXxxhdpi = androidResPath + 'mipmap-xxxhdpi/ic_launcher.png'
 
+    const mipmapHdpiRound = androidResPath + 'mipmap-hdpi/ic_launcher_round.png'
+    const mipmapmdpiRound = androidResPath + 'mipmap-mdpi/ic_launcher_round.png'
+    const mipmapXhdpiRound =
+      androidResPath + 'mipmap-xhdpi/ic_launcher_round.png'
+    const mipmapXxhdpiRound =
+      androidResPath + 'mipmap-xxhdpi/ic_launcher_round.png'
+    const mipmapXxxhdpiRound =
+      androidResPath + 'mipmap-xxxhdpi/ic_launcher_round.png'
+
+    const roundedCorners = (size: number) =>
+      Buffer.from(
+        `<svg><rect x="0" y="0" width="${size}" height="${size}" rx="${
+          size / 4
+        }" ry="${size / 4}"/></svg>`,
+      )
+
     const files = [
       {
         height: 72,
@@ -84,11 +100,44 @@ export class AppIconModule implements IAppIconModule {
         width: 192,
         output: mipmapXxxhdpi,
       },
+      {
+        height: 72,
+        width: 72,
+        output: mipmapHdpiRound,
+        circle: true,
+      },
+      {
+        height: 48,
+        width: 48,
+        output: mipmapmdpiRound,
+        circle: true,
+      },
+      {
+        height: 96,
+        width: 96,
+        output: mipmapXhdpiRound,
+        circle: true,
+      },
+      {
+        height: 144,
+        width: 144,
+        output: mipmapXxhdpiRound,
+        circle: true,
+      },
+      {
+        height: 192,
+        width: 192,
+        output: mipmapXxxhdpiRound,
+        circle: true,
+      },
     ]
     await Promise.all(
-      files.map(({ height, width, output }) =>
+      files.map(({ height, circle, width, output }) =>
         sharp(imagePath)
           .resize({ height, width, fit: 'contain' })
+          .composite(
+            circle ? [{ input: roundedCorners(height), blend: 'dest-in' }] : [],
+          )
           .toFile(output),
       ),
     )

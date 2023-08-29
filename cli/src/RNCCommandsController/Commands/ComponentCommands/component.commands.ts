@@ -16,18 +16,34 @@ export class ComponentCommands implements IComponentCommands {
     @inject(BaseId) private base: IBase,
   ) {}
   async init(params: string[]): Promise<void> {
-    const type = await this.getType()
+    if (params[0]) {
+      const names = params[0].split(',')
+      return Promise.all(
+        names.map(name => {
+          // params = name:type
+          const params = name.split(':')
+          return this.createComponent(params)
+        }),
+      ).then()
+    } else {
+      // params = name type
+      return this.createComponent(params)
+    }
+  }
+
+  async createComponent(params: string[]) {
     const { fileName, folderName } = await this.validators.getValidName(
       '',
-      params,
+      params[0],
     )
+    const type = await this.getType(params[1])
     const folderPath = COMPONENT_FOLDER_PATH + '/' + type + '/' + folderName
 
     if (this.base.isInProjectExist(folderPath)) {
       console.log(
         chalk.red(`ERROR: COMPONENT with name ${folderName} already exist`),
       )
-      shell.exit()
+      return
     }
 
     this.base.createFolderInProject(folderPath)
@@ -36,7 +52,11 @@ export class ComponentCommands implements IComponentCommands {
     )
   }
 
-  getType() {
+  getType(type: string) {
+    if (Object.keys(EComponentTypes).includes(type)) {
+      return type
+    }
+
     return inquirer
       .prompt([
         {

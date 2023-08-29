@@ -25,7 +25,7 @@ export class Validators implements IValidators {
 
   // Check is project initialized
   get isProjectInitialized(): boolean {
-    return this.packageJsonFile.dependencies['@alzhan/rncore-base']
+    return this.packageJsonFile.dependencies['@corbo/base']
   }
 
   // Check is ThemeModule initialized
@@ -39,21 +39,26 @@ export class Validators implements IValidators {
   }
 
   removeSuffix(input: string): string {
-    return input.replace(/blm|store|service|component|screen|repo|\s/g, '')
+    return input
+      .toLowerCase()
+      .replace(/blm|store|service|component|screen|repo|\s/g, '')
   }
 
   toUpperCase(input?: string): string {
     return input ? input.charAt(0).toUpperCase() + input.slice(1) : ''
   }
 
-  async getValidName(suffix?: string, params?: string[]): Promise<IValideName> {
-    if (params && params[0]) {
-      const name = params[0]
-
+  async getValidName(
+    suffix?: string,
+    paramName?: string,
+  ): Promise<IValideName> {
+    if (paramName) {
       return {
-        name,
-        folderName: this.toUpperCase(name) + this.toUpperCase(suffix),
-        fileName: suffix ? name + '.' + suffix.toLowerCase() : name,
+        name: paramName,
+        folderName:
+          this.toUpperCase(this.removeSuffix(paramName)) +
+          this.toUpperCase(suffix),
+        fileName: suffix ? paramName + '.' + suffix.toLowerCase() : paramName,
       }
     }
 
@@ -80,14 +85,12 @@ export class Validators implements IValidators {
     })
   }
 
-  async getValidEventName(params?: string[]): Promise<IValideEventName> {
-    if (params && params[0]) {
-      const name = params[0]
-
+  async getValidEventName(paramName?: string): Promise<IValideEventName> {
+    if (paramName) {
       return {
-        name,
-        transformedName: name.replaceAll(' ', '_').toUpperCase(),
-        functionName: this.toCamelCase('on ' + name.replace(/on/gi, '')),
+        name: paramName,
+        transformedName: paramName.replaceAll(' ', '_').toUpperCase(),
+        functionName: this.toCamelCase('on ' + paramName.replace(/on/gi, '')),
       }
     }
 

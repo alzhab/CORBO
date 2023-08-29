@@ -20,9 +20,20 @@ export class RepositoryCommands implements IRepositoryCommands {
     @inject(BaseId) private base: IBase,
   ) {}
   async init(params: string[], endpoints: IEndpoint[] = []): Promise<void> {
+    if (params[0]) {
+      const names = params[0].split(',')
+      return Promise.all(
+        names.map(name => this.createRepo(name, endpoints)),
+      ).then()
+    } else {
+      return this.createRepo()
+    }
+  }
+
+  async createRepo(name?: string, endpoints: IEndpoint[] = []) {
     const { fileName, folderName } = await this.validators.getValidName(
       'repo',
-      params,
+      name,
     )
     const folderPath = REPOSITORY_FOLDER_PATH + '/' + folderName
 
@@ -30,7 +41,7 @@ export class RepositoryCommands implements IRepositoryCommands {
       console.log(
         chalk.red(`ERROR: REPOSITORY with name ${folderName} already exist`),
       )
-      shell.exit()
+      return
     }
 
     this.base.createFolderInProject(folderPath)

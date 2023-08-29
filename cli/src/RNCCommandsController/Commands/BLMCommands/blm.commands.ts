@@ -19,15 +19,24 @@ export class BlmCommands implements IBlmCommands {
     @inject(BaseId) private base: IBase,
   ) {}
   async init(params: string[]): Promise<void> {
+    if (params[0]) {
+      const names = params[0].split(',')
+      return Promise.all(names.map(this.createBlm.bind(this))).then()
+    } else {
+      return this.createBlm()
+    }
+  }
+
+  async createBlm(name?: string) {
     const { fileName, folderName } = await this.validators.getValidName(
       'blm',
-      params,
+      name,
     )
     const folderPath = BLM_FOLDER_PATH + '/' + folderName
 
     if (this.base.isInProjectExist(folderPath)) {
       console.log(chalk.red(`ERROR: BLM with name ${folderName} already exist`))
-      shell.exit()
+      return
     }
 
     this.base.createFolderInProject(folderPath)

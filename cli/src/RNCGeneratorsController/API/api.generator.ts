@@ -45,7 +45,7 @@ export class ApiGenerator implements IApiGenerator {
         .filter(
           item =>
             !this.base.isInProjectExist(
-              '/src/Instruments/repositories/' + item,
+              '/src/Instruments/repositories/' + item + 'Repo',
             ),
         )
         .map(repo => this.repositoryCommands.init([repo], repos[repo])),
@@ -59,12 +59,15 @@ export class ApiGenerator implements IApiGenerator {
 
     if (this.base.isInProjectExist('/src/Instruments/base')) {
       this.base.createFilesInProject([
-        { path: '/src/Instruments/types.ts', content: definitionsContent },
+        {
+          path: '/src/Instruments/repositories/types.ts',
+          content: definitionsContent,
+        },
       ])
     } else {
       this.base.insertoIntoProjectFile([
         {
-          path: '/src/Instruments/types.ts',
+          path: '/src/Instruments/repositories/types.ts',
           type: 'end',
           text: definitionsContent,
         },
@@ -93,15 +96,15 @@ export class ApiGenerator implements IApiGenerator {
   ): IModuleProperty {
     return {
       name,
-      type: this.getModulePropertyType(property),
+      type: this.getPropertyType(property),
       interface: this.getInterfaceRef(property),
       required,
     }
   }
 
-  getModulePropertyType(property: IDefinitionProperty): any {
+  getPropertyType(property: IDefinitionProperty): any {
     if (property.enum) {
-      return property.enum
+      return '[' + property.enum.map((item: any) => `'${item}'`).join(',') + ']'
     } else if (property.additionalProperties) {
       return Object.keys(property.additionalProperties).map(item =>
         this.parseModuleProperty(
@@ -117,8 +120,7 @@ export class ApiGenerator implements IApiGenerator {
         return 'number'
       case 'array':
         return (
-          this.getModulePropertyType(property.items as IDefinitionProperty) +
-          '[]'
+          this.getPropertyType(property.items as IDefinitionProperty) + '[]'
         )
       case 'string':
         return 'string'
@@ -126,8 +128,6 @@ export class ApiGenerator implements IApiGenerator {
         return 'boolean'
       case 'number':
         return 'number'
-      // case 'object':
-      //   return
       default:
         return ''
     }

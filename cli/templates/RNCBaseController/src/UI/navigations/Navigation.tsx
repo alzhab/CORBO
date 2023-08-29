@@ -12,7 +12,7 @@ import {
   INavigationService,
   NavigationServiceId,
   useInitialRouteBlm,
-} from '@alzhan/rncore-base/NavigationModule'
+} from '@corbo/base/NavigationModule'
 
 export const Navigation = observer(() => {
   const navigationService =

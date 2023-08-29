@@ -19,9 +19,18 @@ export class ServiceCommands implements IServiceCommands {
     @inject(BaseId) private base: IBase,
   ) {}
   async init(params: string[]): Promise<void> {
+    if (params[0]) {
+      const names = params[0].split(',')
+      return Promise.all(names.map(this.createService.bind(this))).then()
+    } else {
+      return this.createService()
+    }
+  }
+
+  async createService(name?: string) {
     const { fileName, folderName } = await this.validators.getValidName(
       'service',
-      params,
+      name,
     )
     const folderPath = SERVICE_FOLDER_PATH + '/' + folderName
 
@@ -29,7 +38,7 @@ export class ServiceCommands implements IServiceCommands {
       console.log(
         chalk.red(`ERROR: SERVICE with name ${folderName} already exist`),
       )
-      shell.exit()
+      return
     }
 
     this.base.createFolderInProject(folderPath)

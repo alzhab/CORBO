@@ -3,9 +3,9 @@ import bindServices from 'services/index';
 import bindStores from 'stores/index';
 import bindBlms from 'blms/index';
 import bindRepositories from 'repositories/index';
-import { bindAppEventsModule } from '@alzhan/rncore-base/AppEventsModule';
-import { bindLocalStorageModule } from '@alzhan/rncore-base/LocalStorageModule';
-import { bindNavigationModule } from '@alzhan/rncore-base/NavigationModule';
+import { bindAppEventsModule } from '@corbo/base/AppEventsModule';
+import { bindLocalStorageModule } from '@corbo/base/LocalStorageModule';
+import { bindNavigationModule } from '@corbo/base/NavigationModule';
 
 export const BINDERS = [
   // modules-base

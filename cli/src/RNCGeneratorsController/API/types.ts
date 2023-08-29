@@ -73,9 +73,7 @@ export interface IDefinitionProperty {
   enum: string[]
   $ref: string
   additionalProperties: { [key: string]: IDefinitionProperty }
-  items: {
-    type: string
-  }
+  items: IDefinitionProperty
 }
 
 export interface IModule {
@@ -90,3 +88,4 @@ export interface IModuleProperty {
   interface?: string
   required?: boolean
 }
+

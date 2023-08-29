@@ -2597,35 +2597,5 @@
         }
       }
     },
-    "RealtimeMessage": {
-      "description": "",
-      "required": [
-        "message",
-        "receivers"
-      ],
-      "type": "object",
-      "properties": {
-        "message": {
-          "title": "Message",
-          "type": "object",
-          "additionalProperties": {
-            "type": "string"
-          }
-        },
-        "receivers": {
-          "description": "",
-          "type": "array",
-          "items": {
-            "type": "integer"
-          }
-        },
-        "event": {
-          "title": "Event",
-          "type": "string",
-          "default": "PING",
-          "minLength": 1
-        }
-      }
-    }
   }
 }

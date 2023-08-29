@@ -1,5 +1,5 @@
 {
-  "name": "@corbo/themes",
+  "name": "@corbo/modules/themes",
   "version": "1.0.0",
   "description": "RNCore Theme Module",
   "main": "index.ts",
