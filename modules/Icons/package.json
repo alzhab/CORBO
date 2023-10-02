@@ -1,5 +1,5 @@
 {
-  "name": "@corbo/modules/icons",
+  "name": "@corrbo/module-icon",
   "version": "1.0.0",
   "description": "",
   "main": "index.ts",

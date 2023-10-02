@@ -23,14 +23,12 @@ export class ScreenCommands implements IScreenCommands {
   }
 
   async createScreen(param?: string) {
-    const { name, folderName, fileName } = await this.validators.getValidName(
+    const { folderName, fileName } = await this.validators.getValidName(
       'screen',
       param,
     )
 
     this.base.createFolderInProject(SCREEN_FOLDER_PATH + '/' + folderName)
-    this.base.createFilesInProject(
-      SCREEN_CONFIG({ fileName, folderName, name }),
-    )
+    this.base.createFilesInProject(SCREEN_CONFIG({ fileName, folderName }))
   }
 }

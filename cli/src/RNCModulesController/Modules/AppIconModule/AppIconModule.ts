@@ -69,9 +69,7 @@ export class AppIconModule implements IAppIconModule {
 
     const roundedCorners = (size: number) =>
       Buffer.from(
-        `<svg><rect x="0" y="0" width="${size}" height="${size}" rx="${
-          size / 4
-        }" ry="${size / 4}"/></svg>`,
+        `<svg><rect x="0" y="0" width="${size}" height="${size}" rx="${size}" ry="${size}"/></svg>`,
       )
 
     const files = [

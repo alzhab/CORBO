@@ -3,7 +3,7 @@ import EntryPoint from './src/EntryPoint'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { Platform, UIManager } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
-import { IOCProvider } from '@corbo/base/IOCModule'
+import { IOCProvider } from '@corrbo/base/IOCModule'
 import { BINDERS } from './src/binders'
 
 if (Platform.OS === 'android') {

@@ -1,1 +1,1 @@
-RNCore corbo
+Corbo

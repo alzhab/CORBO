@@ -1,6 +1,6 @@
 import { ICopyToProject, IInsertoIntoProjectFileParams } from '../../../Base'
 
-export const BOOT_MODULE_DEPENDENCIES = ['@corbo/modules/boot']
+export const BOOT_MODULE_DEPENDENCIES = ['@corrbo/module-boot']
 
 export const BOOT_MODULE_TEMPLATE_PATH = './templates/Modules/Boot'
 
@@ -16,7 +16,7 @@ export const BOOT_MODULE_BIND: IInsertoIntoProjectFileParams[] = [
   {
     path: '/src/binders.ts',
     type: 'before',
-    text: "import { bindBootModule } from '@corbo/modules/boot'",
+    text: "import { bindBootModule } from '@corrbo/module-boot'",
     searchRegex: /export const BINDERS = \[/,
   },
   {
@@ -32,7 +32,7 @@ export const BOOT_MODULE_FLOW_CONFIG: IInsertoIntoProjectFileParams[] = [
   {
     path: '/src/BusinessLogic/flow/flow.ts',
     searchRegex: /import \{ autorun \} from 'mobx'/,
-    text: `import { BootBlmId, IBootBlm } from '@corbo/modules/boot'`,
+    text: `import { BootBlmId, IBootBlm } from '@corrbo/module-boot'`,
     type: 'after',
   },
   {
@@ -54,7 +54,7 @@ export const BOOT_MODULE_FLOW_CONFIG: IInsertoIntoProjectFileParams[] = [
     path: '/src/EntryPoint.tsx',
     searchRegex: /import \{ Navigation \} from 'navigations\/Navigation'/,
     type: 'after',
-    text: "import { useBootBlm } from '@corbo/modules/boot'\nimport { Boot } from 'templates/Boot'",
+    text: "import { useBootBlm } from '@corrbo/module-boot'\nimport { Boot } from 'templates/Boot'",
   },
   {
     path: '/src/EntryPoint.tsx',

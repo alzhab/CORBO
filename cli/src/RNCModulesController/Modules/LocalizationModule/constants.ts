@@ -1,7 +1,7 @@
 import { ICopyToProject, IInsertoIntoProjectFileParams } from '../../../Base'
 
 export const LOCALIZATION_MODULE_DEPENDENCIES = [
-  '@corbo/modules/localization',
+  '@corrbo/module-localization',
 ]
 
 export const LOCALIZATION_MODULE_TEMPLATE_PATH =
@@ -19,7 +19,7 @@ export const LOCALIZATION_MODULE_BIND: IInsertoIntoProjectFileParams[] = [
   {
     path: '/src/binders.ts',
     type: 'before',
-    text: "import { bindLocalizationModule, LocalizationStoreId } from '@corbo/modules/localization';\n",
+    text: "import { bindLocalizationModule, LocalizationStoreId } from '@corrbo/module-localization';\n",
     searchRegex: /export const BINDERS = \[/,
   },
   {

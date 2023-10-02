@@ -1,7 +1,7 @@
 {
-  "name": "@corbo/modules/themes",
+  "name": "@corrbo/module-theme",
   "version": "1.0.0",
-  "description": "RNCore Theme Module",
+  "description": "CORBO Theme Module",
   "main": "index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

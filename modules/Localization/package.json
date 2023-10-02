@@ -1,5 +1,5 @@
 {
-  "name": "@corbo/modules/localization",
+  "name": "@corrbo/module-localization",
   "version": "1.0.0",
   "description": "",
   "main": "index.ts",

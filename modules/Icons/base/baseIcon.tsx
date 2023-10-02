@@ -3,7 +3,7 @@ import { Pressable } from 'react-native'
 import { IIconProps } from '../types';
 import { useIconSizes } from '../hooks';
 import Svg from 'react-native-svg'
-import { Spacings, useSpacings } from '@corbo/modules/spacing-props'
+import { Spacings, useSpacings } from '@corrbo/module-spacing-props'
 
 export const baseIcon = (
   Component: FC<IIconProps & Spacings>,

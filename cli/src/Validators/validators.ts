@@ -25,7 +25,7 @@ export class Validators implements IValidators {
 
   // Check is project initialized
   get isProjectInitialized(): boolean {
-    return this.packageJsonFile.dependencies['@corbo/base']
+    return this.packageJsonFile.dependencies['@corrbo/base']
   }
 
   // Check is ThemeModule initialized
@@ -48,34 +48,54 @@ export class Validators implements IValidators {
     return input ? input.charAt(0).toUpperCase() + input.slice(1) : ''
   }
 
+  // input ['AuthorizationDataBlm', 'Authorization DataBlm', 'authorizationDataBlm']
+  // output {
+  //    folderName: AuthorizationData
+  //    fileName: authorizationData.blm.tsx
+  // }
+  async getName(paramName?: string): Promise<string> {
+    if (paramName) {
+      return Promise.resolve(paramName)
+    } else {
+      return inquirer
+        .prompt([
+          {
+            type: 'input',
+            message: 'Name:',
+            name: 'name',
+          },
+        ])
+        .then(res => this.removeSuffix(res.name))
+    }
+  }
+
   async getValidName(
     suffix?: string,
     paramName?: string,
   ): Promise<IValideName> {
-    if (paramName) {
-      return {
-        name: paramName,
-        folderName:
-          this.toUpperCase(this.removeSuffix(paramName)) +
-          this.toUpperCase(suffix),
-        fileName: suffix ? paramName + '.' + suffix.toLowerCase() : paramName,
-      }
-    }
+    const name = await this.getName(paramName)
 
-    const name = await inquirer
-      .prompt([
-        {
-          type: 'input',
-          message: 'Name:',
-          name: 'name',
-        },
-      ])
-      .then(res => this.removeSuffix(res.name))
+    // разделить слова
+    const splittedWords = name
+      .replace(/([a-z])([A-Z])/g, '$1 $2')
+      .split(' ')
+      // удалить суфикс
+      .filter(
+        item =>
+          !['blm', 'store', 'service', 'component', 'screen', 'repo'].includes(
+            item.toLowerCase(),
+          ),
+      )
+      .map((item, index) => (index === 0 ? this.toUpperCase(item) : item))
+
+    const folderName =
+      splittedWords.map(item => this.toUpperCase(item)).join('') +
+      this.toUpperCase(suffix)
+    const fileName = splittedWords.join('') + '.' + suffix
 
     return {
-      name,
-      folderName: this.toUpperCase(name) + this.toUpperCase(suffix),
-      fileName: suffix ? name + '.' + suffix.toLowerCase() : name,
+      folderName,
+      fileName,
     }
   }
 

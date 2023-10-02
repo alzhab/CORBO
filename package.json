@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "doctest-ts-improved": "^0.8.8"
+  }
+}

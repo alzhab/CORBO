@@ -14,7 +14,6 @@ export interface IValidators {
 }
 
 export interface IValideName {
-  name: string
   folderName: string
   fileName: string
 }

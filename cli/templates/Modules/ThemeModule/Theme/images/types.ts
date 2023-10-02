@@ -1,4 +1,4 @@
-import { ColorsNames } from '@corbo/modules/theme'
+import { ColorsNames } from '@corrbo/modules/theme'
 
 export interface IImages {}
 

@@ -3,9 +3,9 @@ import bindServices from 'services/index';
 import bindStores from 'stores/index';
 import bindBlms from 'blms/index';
 import bindRepositories from 'repositories/index';
-import { bindAppEventsModule } from '@corbo/base/AppEventsModule';
-import { bindLocalStorageModule } from '@corbo/base/LocalStorageModule';
-import { bindNavigationModule } from '@corbo/base/NavigationModule';
+import { bindAppEventsModule } from '@corrbo/base/AppEventsModule';
+import { bindLocalStorageModule } from '@corrbo/base/LocalStorageModule';
+import { bindNavigationModule } from '@corrbo/base/NavigationModule';
 
 export const BINDERS = [
   // modules-base

@@ -2,7 +2,7 @@ import { ICopyToProject, IInsertoIntoProjectFileParams } from '../../../Base'
 
 export const THEME_TEMPLATE_PATH = './templates/Modules/ThemeModule'
 export const THEME_DEPENDENCIES = [
-  '@corbo/modules/theme',
+  '@corrbo/modules/theme',
   'react-native-size-matters',
 ]
 
@@ -10,7 +10,7 @@ export const THEME_BIND: IInsertoIntoProjectFileParams[] = [
   {
     path: '/src/binders.ts',
     type: 'before',
-    text: "import { bindThemeModule, ThemeStoreId } from '@corbo/modules/theme';\n",
+    text: "import { bindThemeModule, ThemeStoreId } from '@corrbo/modules/theme';\n",
     searchRegex: /export const BINDERS = \[/,
   },
   {

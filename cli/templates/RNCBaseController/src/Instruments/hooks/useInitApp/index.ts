@@ -2,11 +2,11 @@ import { useEffect, useMemo } from 'react'
 import { useInjection } from 'inversify-react'
 import { AppFlowId } from 'flow/flow'
 import { IAppFlow } from 'flow/types'
-import { useIsStoresHydrated } from '@corbo/base/LocalStorageModule'
+import { useIsStoresHydrated } from '@corrbo/base/LocalStorageModule'
 import {
   AppEventsStoreId,
   IAppEventsStore,
-} from '@corbo/base/AppEventsModule'
+} from '@corrbo/base/AppEventsModule'
 
 export const useInitApp = (hydratedStoresIds: symbol[]) => {
   const appFlow = useInjection<IAppFlow>(AppFlowId)

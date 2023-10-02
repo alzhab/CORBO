@@ -1,5 +1,5 @@
 {
-  "name": "@corbo/modules/network",
+  "name": "@corrbo/module-network",
   "version": "1.0.0",
   "description": "",
   "main": "index.ts",
@@ -10,7 +10,7 @@
     "type": "git",
     "url": "git+https://github.com/alzhab/rncore-network-module.git"
   },
-  "author": "alzhan",
+  "author": "corbo",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/alzhab/rncore-network-module/issues"

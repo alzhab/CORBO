@@ -2,8 +2,8 @@ import {EAppEvents, IAppFlow, IFlows} from './types';
 import {inject, injectable} from 'inversify';
 import {autorun} from 'mobx';
 import Splashscreen from 'react-native-splash-screen';
-import {AppEventsBlmId, AppEventsStoreId, IAppEventsBlm, IAppEventsStore} from '@corbo/base/AppEventsModule';
-import {IInitialRouteBlm, InitialRouteBlmId} from '@corbo/base/NavigationModule';
+import {AppEventsBlmId, AppEventsStoreId, IAppEventsBlm, IAppEventsStore} from '@corrbo/base/AppEventsModule';
+import {IInitialRouteBlm, InitialRouteBlmId} from '@corrbo/base/NavigationModule';
 
 export const AppFlowId = Symbol.for('Flow')
 

@@ -6,19 +6,19 @@ export interface INavigationService {
   navigation: any
   setNavigation(val: any): void
 
-  navigate<RouteName extends keyof TRoutes>(
-    name: RouteName,
-    params?: TRoutes[RouteName] | { screen: RouteName },
+  navigate<Routes = TRoutes>(
+    name: keyof Routes,
+    params?: Routes[keyof Routes] | { screen: keyof Routes },
   ): void
 
-  reset<RouteName extends keyof TRoutes>(
-    name: RouteName,
-    params?: TRoutes[RouteName],
+  reset<Routes = TRoutes>(
+    name: keyof Routes,
+    params?: Routes[keyof Routes],
   ): void
 
-  replace<RouteName extends keyof TRoutes>(
-    name: RouteName,
-    params?: TRoutes[RouteName],
+  replace<Routes = TRoutes>(
+    name: keyof Routes,
+    params?: Routes[keyof Routes],
   ): void
 
   init(navigationRef: RefObject<NavigationContainerRef<TRoutes>>): void

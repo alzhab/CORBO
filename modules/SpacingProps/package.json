@@ -1,5 +1,5 @@
 {
-  "name": "@corbo/modules/spacing-props",
+  "name": "@corrbo/module-spacing-props",
   "version": "1.0.0",
   "description": "RN Core spacing props module",
   "main": "index.ts",

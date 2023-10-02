@@ -12,7 +12,7 @@ import {
   INavigationService,
   NavigationServiceId,
   useInitialRouteBlm,
-} from '@corbo/base/NavigationModule'
+} from '@corrbo/base/NavigationModule'
 
 export const Navigation = observer(() => {
   const navigationService =

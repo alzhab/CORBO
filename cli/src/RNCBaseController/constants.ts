@@ -3,7 +3,7 @@ import { IInsertoIntoProjectFileParams } from '../Base'
 export const RNCBASE_TEMPLATE_PATH = './templates/RNCBaseController'
 
 export const RNCBASE_DEPENDENCIES = [
-  '@corbo/base',
+  '@corrbo/base',
   '@react-native-async-storage/async-storage',
   '@react-navigation/native',
   '@react-navigation/stack',

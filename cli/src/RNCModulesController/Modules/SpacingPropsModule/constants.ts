@@ -1,1 +1,1 @@
-export const SPACING_PROPS_DEPENDENCIES = ['@corbo/modules/spacing-props']
+export const SPACING_PROPS_DEPENDENCIES = ['@corrbo/module-spacing-props']
