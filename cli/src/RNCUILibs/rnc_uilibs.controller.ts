@@ -34,7 +34,7 @@ export class RNCUILibs implements IRNCUILibs {
         {
           type: 'list',
           name: 'uilib',
-          message: 'Choose UI lib',
+          message: 'Choose ui lib',
           choices: (Object.keys(EUILibs) as Array<keyof typeof EUILibs>).map(
             key => ({
               value: EUILibs[key],

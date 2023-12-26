@@ -28,12 +28,12 @@ export class NavigationService implements INavigationService {
     this._navigationRef = navigationRef
   }
 
-  navigate<Routes = TRoutes>(
-    name: keyof Routes,
-    params?: Routes[keyof Routes] | { screen: keyof Routes },
+  navigate<RouteName extends keyof TRoutes>(
+    name: RouteName,
+    params?: TRoutes[RouteName] | { screen: RouteName },
   ) {
     if (this._navigationRef && this._navigationRef.current) {
-      this._navigationRef.current.navigate(name, params)
+      this._navigationRef.current.navigate(name as any, params as any)
     }
   }
 
@@ -53,9 +53,9 @@ export class NavigationService implements INavigationService {
     }
   }
 
-  reset<Routes = TRoutes>(
-    name: keyof Routes,
-    params?: Routes[keyof Routes],
+  reset<RouteName extends keyof TRoutes>(
+    name: RouteName,
+    params?: TRoutes[RouteName],
   ) {
     if (this._navigationRef && this._navigationRef.current) {
       this._navigationRef.current.dispatch(
@@ -67,9 +67,9 @@ export class NavigationService implements INavigationService {
     }
   }
 
-  replace<Routes = TRoutes>(
-    name: keyof Routes,
-    params?: Routes[keyof Routes],
+  replace<RouteName extends keyof TRoutes>(
+    name: RouteName,
+    params?: TRoutes[RouteName],
   ) {
     if (this._navigationRef && this._navigationRef.current) {
       this._navigationRef.current.dispatch(StackActions.replace(name, params))

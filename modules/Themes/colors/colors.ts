@@ -1,5 +1,5 @@
 import { ColorsConfig, ColorsNames, SbColorsConfig } from './types'
-import config from 'configs/Theme/config.json'
+import { CONFIG as config } from 'configs/Theme/config'
 
 export const COLORS: ColorsConfig = config.colors as ColorsConfig
 

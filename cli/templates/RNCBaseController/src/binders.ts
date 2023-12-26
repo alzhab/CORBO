@@ -1,23 +1,20 @@
-import bindAppFlow from 'flow/index';
-import bindServices from 'services/index';
-import bindStores from 'stores/index';
-import bindBlms from 'blms/index';
-import bindRepositories from 'repositories/index';
-import { bindAppEventsModule } from '@corrbo/base/AppEventsModule';
-import { bindLocalStorageModule } from '@corrbo/base/LocalStorageModule';
-import { bindNavigationModule } from '@corrbo/base/NavigationModule';
+import { bindRootFlow } from 'base/root-flow'
+import { bindServices } from 'services/index'
+import { bindRepositories } from 'repositories/index'
+import { LOCAL_STORAGE_SERVICE_BINDERS } from '@corrbo/base/LocalStorageModule'
+import { NAVIGATION_MODULE_BINDERS } from '@corrbo/base/NavigationModule'
+import { APP_EVENTS_BINDERS } from '@corrbo/base/AppEventsModule'
+import { BLMS_BINDERS } from './blms/binders'
+import { Container } from 'inversify'
 
-export const BINDERS = [
+export const BINDERS: ((container: Container) => void)[] = [
   // modules-base
-  bindAppEventsModule,
-  bindLocalStorageModule,
-  bindNavigationModule,
+  ...APP_EVENTS_BINDERS,
+  ...LOCAL_STORAGE_SERVICE_BINDERS,
+  ...NAVIGATION_MODULE_BINDERS,
   // app
-  bindAppFlow,
+  ...BLMS_BINDERS,
+  bindRootFlow,
   bindServices,
-  bindStores,
-  bindBlms,
   bindRepositories,
-];
-
-export const HYDRATED_STORES = [];
+]

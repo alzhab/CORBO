@@ -1,4 +1,4 @@
-import { IInsertoIntoProjectFileParams } from '../Base'
+import { ICopyToProject, IInsertoIntoProjectFileParams } from '../Base'
 
 export const RNCBASE_TEMPLATE_PATH = './templates/RNCBaseController'
 
@@ -20,6 +20,7 @@ export const RNCBASE_DEPENDENCIES = [
   'reflect-metadata',
 ]
 export const RNCBASE_DEV_DEPENDENCIES = [
+  '@babel/plugin-proposal-unicode-property-regex',
   '@babel/plugin-proposal-decorators',
   '@babel/plugin-transform-runtime',
   '@babel/preset-env',
@@ -46,7 +47,7 @@ export const RNCBASE_DEV_DEPENDENCIES = [
   'react-test-renderer',
   'typescript',
 ]
-export const TEMPLATE_PATHES = [
+export const TEMPLATE_PATHES: ICopyToProject[] = [
   '/src',
   '/babel.config.js',
   '/App.tsx',
@@ -55,22 +56,26 @@ export const TEMPLATE_PATHES = [
   '/index.js',
   '/.env',
   '/.prettierrc.js',
-]
+].map(item => ({
+  pathFrom: RNCBASE_TEMPLATE_PATH + item,
+  pathTo: '/',
+  type: item === '/src' ? 'folder' : 'file',
+}))
 
 export const NAVIGATION_CONFIGURATION: IInsertoIntoProjectFileParams[] = [
   {
-    path: '/android/app/src/main/java/com/**/**/MainActivity.java',
+    path: '/android/app/src/main/java/com/**/**/MainActivity.*',
     text: 'import android.os.Bundle;',
-    type: 'start',
+    type: 'before',
+    searchRegex: new RegExp('import com.facebook.react.ReactActivity;'),
   },
   {
-    path: '/android/app/src/main/java/com/**/**/MainActivity.java',
+    path: '/android/app/src/main/java/com/**/**/MainActivity.*',
     text: `  /**
    * React navigation additional configuration step to properly work on Android devices
    */
   @Override
   protected void onCreate(Bundle savedInstanceState) {
-    SplashScreen.show(this);
     super.onCreate(null);
   }`,
     type: 'after',

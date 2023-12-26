@@ -45,7 +45,7 @@ export class ApiGenerator implements IApiGenerator {
         .filter(
           item =>
             !this.base.isInProjectExist(
-              '/src/Instruments/repositories/' + item + 'Repo',
+              '/src/instruments/repositories/' + item + 'Repo',
             ),
         )
         .map(repo => this.repositoryCommands.init([repo], repos[repo])),
@@ -57,17 +57,17 @@ export class ApiGenerator implements IApiGenerator {
       .map(item => MODULE_INTERFACE(this.parseModule(definitions[item], item)))
       .join('\n')
 
-    if (this.base.isInProjectExist('/src/Instruments/base')) {
+    if (this.base.isInProjectExist('/src/instruments/base')) {
       this.base.createFilesInProject([
         {
-          path: '/src/Instruments/repositories/types.ts',
+          path: '/src/instruments/repositories/types.ts',
           content: definitionsContent,
         },
       ])
     } else {
       this.base.insertoIntoProjectFile([
         {
-          path: '/src/Instruments/repositories/types.ts',
+          path: '/src/instruments/repositories/types.ts',
           type: 'end',
           text: definitionsContent,
         },

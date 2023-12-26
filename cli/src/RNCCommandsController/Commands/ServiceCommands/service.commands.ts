@@ -28,18 +28,12 @@ export class ServiceCommands implements IServiceCommands {
   }
 
   async createService(name?: string) {
-    const { fileName, folderName } = await this.validators.getValidName(
-      'service',
-      name,
-    )
-    const folderPath = SERVICE_FOLDER_PATH + '/' + folderName
-
-    if (this.base.isInProjectExist(folderPath)) {
-      console.log(
-        chalk.red(`ERROR: SERVICE with name ${folderName} already exist`),
-      )
-      return
-    }
+    const { fileName, folderName, folderPath } =
+      await this.validators.getValidName({
+        suffix: 'service',
+        name,
+        folderPath: SERVICE_FOLDER_PATH,
+      })
 
     this.base.createFolderInProject(folderPath)
     this.base.createFilesInProject(

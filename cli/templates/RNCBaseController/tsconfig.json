@@ -19,21 +19,21 @@
     "baseUrl": "."
     /* Base directory to resolve non-absolute module names. */,
     "paths": {
-      // UI
-      "assets/*": ["src/UI/assets/*"],
-      "icons/*": ["src/UI/assets/icons/*"],
-      "atoms/*": ["src/UI/components/atoms/*"],
-      "molecules/*": ["src/UI/components/molecules/*"],
-      "organisms/*": ["src/UI/components/organisms/*"],
-      "templates/*": ["src/UI/components/templates/*"],
-      "screens/*": ["src/UI/screens/*"],
-      "navigations/*": ["src/UI/navigations/*"],
-      // Instruments
-      "hooks/*": ["src/Instruments/hooks/*"],
-      "repositories/*": ["src/Instruments/repositories/*"],
-      "services/*": ["src/Instruments/services/*"],
-      "types/*": ["src/Instruments/types/*"],
-      "base/*": ["src/Instruments/base/*"],
+      // ui
+      "assets/*": ["src/ui/assets/*"],
+      "icons/*": ["src/ui/assets/icons/*"],
+      "atoms/*": ["src/ui/components/atoms/*"],
+      "molecules/*": ["src/ui/components/molecules/*"],
+      "organisms/*": ["src/ui/components/organisms/*"],
+      "templates/*": ["src/ui/components/templates/*"],
+      "screens/*": ["src/ui/screens/*"],
+      "navigations/*": ["src/ui/navigations/*"],
+      // instruments
+      "hooks/*": ["src/instruments/hooks/*"],
+      "repositories/*": ["src/instruments/repositories/*"],
+      "services/*": ["src/instruments/services/*"],
+      "types/*": ["src/instruments/types/*"],
+      "base/*": ["src/instruments/base/*"],
       // Business Logic
       "blms/*": ["src/BusinessLogic/blms/*"],
       "flow/*": ["src/BusinessLogic/flow/*"],
@@ -55,6 +55,6 @@
     "commands_old"
   ],
   "typeRoots": [
-    "./src/Instruments/types"
+    "./src/instruments/types"
   ]
 }

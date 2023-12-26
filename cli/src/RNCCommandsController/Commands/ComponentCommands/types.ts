@@ -1,5 +1,5 @@
 export interface IComponentCommands {
-  init(params: string[]): Promise<void>
+  init(): Promise<void>
 }
 
 export enum EComponentTypes {

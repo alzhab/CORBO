@@ -1,6 +1,6 @@
 import { verticalScale } from 'react-native-size-matters/extend'
 import { FONTS_TYPES } from "configs/Theme/fonts/types";
-import config from 'configs/Theme/config.json'
+import { CONFIG as config } from 'configs/Theme/config'
 
 export type TTYPOGRAPHY = {
   [K in keyof typeof config.fonts]: TTYPOGRAPHT_ITEM

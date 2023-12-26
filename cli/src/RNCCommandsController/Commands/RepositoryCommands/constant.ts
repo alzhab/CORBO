@@ -10,7 +10,7 @@ import {
 import { ITemplateProps } from '../../../types'
 import { IReposCreateFileTemplateProps } from './types'
 
-export const REPOSITORY_FOLDER_PATH = '/src/Instruments/repositories'
+export const REPOSITORY_FOLDER_PATH = '/src/instruments/repositories'
 
 export const REPOSITORY_CREATE_FILES: (
   data: IReposCreateFileTemplateProps,

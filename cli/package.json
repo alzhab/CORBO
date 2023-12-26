@@ -1,10 +1,10 @@
 {
   "name": "@corrbo/cli",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "",
   "main": "dist/bundle.js",
   "bin": {
-    "corbo": "bin/corbo"
+    "crb": "bin/crb"
   },
   "keywords": [],
   "author": "corbo",
@@ -13,7 +13,7 @@
     "clean": "rm dist/bundle.js",
     "build": "webpack --mode=production && npm pack && npm publish --access=public",
     "ex-pack": "webpack --mode=production && npm pack",
-    "ex": "webpack --mode=production && copyfiles -u 1 \"dist/**/*\" ../../quiz/node_modules/@corrbo/cli/dist",
+    "ex": "webpack --mode=production && copyfiles -u 1 \"dist/**/*\" ../../Neutron/SmartHome/node_modules/@corrbo/cli/dist",
     "start": "node dist/bundle.js",
     "lint": "eslint ."
   },
@@ -29,6 +29,7 @@
     "inversify": "6.0.1",
     "log-update": "^5.0.1",
     "minimist": "1.2.8",
+    "react-native-mask-input": "^1.2.3",
     "reflect-metadata": "0.1.13",
     "sharp": "0.32.1",
     "shelljs": "0.8.5",

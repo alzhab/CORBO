@@ -49,12 +49,12 @@ export class IconsModule implements IIconsModule {
 
   checkIsIconsModuleValid() {
     const iconsFolderNotExist = !this.base.isInProjectExist(
-      '/src/UI/assets/icons',
+      '/src/ui/assets/icons',
     )
 
     if (iconsFolderNotExist) {
-      console.log(chalk.red('ERROR: src/UI/assets/icons empty'))
-      this.base.createFolderInProject('/src/UI/assets/icons')
+      console.log(chalk.red('ERROR: src/ui/assets/icons empty'))
+      this.base.createFolderInProject('/src/ui/assets/icons')
       this.base.createFolderInProject(ICONS_MODULE_IMPORT_PATH)
     }
 
@@ -68,11 +68,11 @@ export class IconsModule implements IIconsModule {
     }
 
     const importFolderEmpty = this.base.isFolderEmptyInProject(
-      '/src/UI/assets/icons/import',
+      '/src/ui/assets/icons/import',
     )
 
     if (importFolderEmpty) {
-      console.log(chalk.red('ERROR: src/UI/assets/icons/import folder empty'))
+      console.log(chalk.red('ERROR: src/ui/assets/icons/import folder empty'))
     }
   }
 

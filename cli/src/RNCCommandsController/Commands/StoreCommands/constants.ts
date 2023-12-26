@@ -9,7 +9,7 @@ import {
 } from '../../../../templates/Commands/StoreCommands/constants'
 import { ITemplateProps } from '../../../types'
 
-export const STORE_FOLDER_PATH = '/src/BusinessLogic/stores'
+export const STORE_FOLDER_PATH = '/src/blm/stores'
 
 export const STORE_CREATE_FILES: (
   data: ITemplateProps,

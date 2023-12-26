@@ -1,10 +1,10 @@
 import { IInsertoIntoProjectFileParams } from '../../../Base'
-import { IValideEventName } from '../../../Validators'
+import { IValidEventName } from '../../../Validators'
 
-export const FLOW_FOLDER_PATH = '/src/BusinessLogic/flow'
+export const FLOW_FOLDER_PATH = '/src/blm/root-flow'
 
 export const FLOW_CREATE_EVENT: (
-  data: IValideEventName,
+  data: IValidEventName,
 ) => IInsertoIntoProjectFileParams[] = ({
   name,
   transformedName,
@@ -23,13 +23,13 @@ export const FLOW_CREATE_EVENT: (
     type: 'after',
   },
   {
-    path: FLOW_FOLDER_PATH + '/flow.ts',
+    path: FLOW_FOLDER_PATH + '/app-app-app-events.flow.ts',
     text: `[EAppEvents.${transformedName}]: this.${functionName}.bind(this),`,
     searchRegex: /\[EAppEvents.APP_INIT\]: this.onAppInit,/,
     type: 'after',
   },
   {
-    path: FLOW_FOLDER_PATH + '/flow.ts',
+    path: FLOW_FOLDER_PATH + '/app-app-app-events.flow.ts',
     text: `${functionName}(){}`,
     searchRegex: /onAppInit\(\) \{/,
     type: 'before',

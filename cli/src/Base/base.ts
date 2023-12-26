@@ -76,7 +76,7 @@ export class Base implements IBase {
         type: 'end',
       },
       {
-        path: '/src/Instruments/types/env.d.ts',
+        path: '/src/instruments/types/env.d.ts',
         text: Object.keys(data)
           .map(key => `  export const ${key}: string`)
           .join('\n'),
@@ -234,6 +234,31 @@ export class Base implements IBase {
     } else {
       console.log(chalk.red('ERROR: file ', path, ' empty'))
       shell.exit()
+    }
+  }
+
+  getFoldersList(path: string): string[] {
+    return fs
+      .readdirSync(PROJECT_PATH + '/' + path, { withFileTypes: true })
+      .filter(dirent => dirent.isDirectory())
+      .map(dirent => dirent.name)
+  }
+
+  promiseListCall<D>(
+    array: Array<D> | undefined,
+    call: (item?: D) => Promise<any>,
+  ) {
+    if (array && array[0]) {
+      return Promise.all(array.map(item => call(item))).then()
+    } else {
+      // params = name type
+      return call()
+    }
+  }
+
+  async promiseOneByOne(promises: (() => Promise<any>)[]): Promise<void> {
+    for (const promise of promises) {
+      await promise()
     }
   }
 }

@@ -4,8 +4,8 @@ import { IValidators, ValidatorsId } from '../../../Validators'
 import { BaseId, IBase } from '../../../Base'
 import { COMPONENT_CREATE_FILES, COMPONENT_FOLDER_PATH } from './constants'
 import chalk from 'chalk'
-import shell from 'shelljs'
 import inquirer from 'inquirer'
+import minimist from 'minimist'
 
 export const ComponentCommandsId = Symbol('ComponentCommandsId')
 
@@ -15,36 +15,37 @@ export class ComponentCommands implements IComponentCommands {
     @inject(ValidatorsId) private validators: IValidators,
     @inject(BaseId) private base: IBase,
   ) {}
-  async init(params: string[]): Promise<void> {
-    if (params[0]) {
-      const names = params[0].split(',')
-      return Promise.all(
-        names.map(name => {
-          // params = name:type
-          const params = name.split(':')
-          return this.createComponent(params)
-        }),
-      ).then()
-    } else {
-      // params = name type
-      return this.createComponent(params)
-    }
+  async init(): Promise<void> {
+    const { _: names = [''] } = minimist(process.argv.slice(4))
+
+    const data = await this.validators.getComponentsNames(names)
+
+    return this.base.promiseOneByOne(
+      data.map(
+        component => () => this.createComponent(component.split(':') as any),
+      ),
+    )
   }
 
-  async createComponent(params: string[]) {
-    const { fileName, folderName } = await this.validators.getValidName(
-      '',
-      params[0],
-    )
-    const type = await this.getType(params[1])
-    const folderPath = COMPONENT_FOLDER_PATH + '/' + type + '/' + folderName
+  async createComponent([name, type]: [name: string, type: EComponentTypes]) {
+    type = await this.getType(name, type)
 
-    if (this.base.isInProjectExist(folderPath)) {
-      console.log(
-        chalk.red(`ERROR: COMPONENT with name ${folderName} already exist`),
+    if (
+      this.base.isInProjectExist(
+        COMPONENT_FOLDER_PATH + '/' + type + '/' + name,
       )
-      return
+    ) {
+      console.log(chalk.red(`Compnonent ${name} already exist`))
+
+      return Promise.resolve()
     }
+
+    const { fileName, folderName, folderPath } =
+      await this.validators.getValidName({
+        suffix: '',
+        name,
+        folderPath: COMPONENT_FOLDER_PATH + '/' + type,
+      })
 
     this.base.createFolderInProject(folderPath)
     this.base.createFilesInProject(
@@ -52,10 +53,11 @@ export class ComponentCommands implements IComponentCommands {
     )
   }
 
-  getType(type: string) {
+  getType(name: string, type: string) {
     if (Object.keys(EComponentTypes).includes(type)) {
       return type
     }
+    console.log(chalk.green(`Type for ${name} component`))
 
     return inquirer
       .prompt([

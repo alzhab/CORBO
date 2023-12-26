@@ -21,13 +21,13 @@ project(':react-native-splash-screen').projectDir = new File(rootProject.project
       searchRegex: /dependencies \{/,
     },
     {
-      path: '/android/app/src/main/java/com/**/**/MainActivity.java',
+      path: '/android/app/src/main/java/com/**/**/MainActivity.*',
       text: 'import org.devio.rn.splashscreen.SplashScreen;',
       type: 'after',
       searchRegex: new RegExp('import com.facebook.react.ReactActivity;'),
     },
     {
-      path: '/android/app/src/main/java/com/**/**/MainActivity.java',
+      path: '/android/app/src/main/java/com/**/**/MainActivity.*',
       text: '        SplashScreen.show(this);',
       type: 'after',
       searchRegex: new RegExp(
@@ -67,13 +67,13 @@ export const SPLASH_SCREEN_IOS_CONFIGURATION: IInsertoIntoProjectFileParams[] =
 
 export const SPLASH_SCREEN_BIND: IInsertoIntoProjectFileParams[] = [
   {
-    path: '/src/BusinessLogic/flow/flow.ts',
+    path: '/src/blm/root-flow/app-app-app-events.flow.ts',
     searchRegex: /import \{ autorun \} from 'mobx'/,
     text: `import Splashscreen from 'react-native-splash-screen';`,
     type: 'after',
   },
   {
-    path: '/src/BusinessLogic/flow/flow.ts',
+    path: '/src/blm/root-flow/app-app-app-events.flow.ts',
     searchRegex: /onAppInit\(\) \{/,
     text: `    Splashscreen.hide();\n`,
     type: 'after',

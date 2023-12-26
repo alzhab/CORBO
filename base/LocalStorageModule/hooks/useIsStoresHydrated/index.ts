@@ -1,5 +1,4 @@
 import { useInjection } from 'inversify-react'
-
 import { useMemo } from 'react'
 
 interface BaseStore {

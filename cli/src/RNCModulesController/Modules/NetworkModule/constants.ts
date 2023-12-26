@@ -6,12 +6,12 @@ export const NETWORK_MODULE_INSERT_AXIOS: ICopyToProject[] = [
   {
     pathFrom: NETWORK_MODULE_TEMPLATE_PATH + '/base/BaseRest',
     type: 'folder',
-    pathTo: '/src/Instruments/base/BaseRest',
+    pathTo: '/src/instruments/base/BaseRest',
   },
   {
     pathFrom: NETWORK_MODULE_TEMPLATE_PATH + '/services/HttpClientService',
     type: 'folder',
-    pathTo: '/src/Instruments/services',
+    pathTo: '/src/instruments/services',
   },
 ]
 
@@ -19,12 +19,12 @@ export const NETWORK_MODULE_INSERT_MOCK: ICopyToProject[] = [
   {
     pathFrom: NETWORK_MODULE_TEMPLATE_PATH + '/services/MockAdapter',
     type: 'folder',
-    pathTo: '/src/Instruments/services',
+    pathTo: '/src/instruments/services',
   },
   {
     pathFrom: NETWORK_MODULE_TEMPLATE_PATH + '/services/MockAdapter',
     type: 'folder',
-    pathTo: '/src/Instruments/services',
+    pathTo: '/src/instruments/services',
   },
   {
     pathFrom: NETWORK_MODULE_TEMPLATE_PATH + '/Configs/MockData',
@@ -35,7 +35,7 @@ export const NETWORK_MODULE_INSERT_MOCK: ICopyToProject[] = [
 
 export const NETWORK_MODULE_BIND_AXIOS: IInsertoIntoProjectFileParams[] = [
   {
-    path: '/src/Instruments/services/index.ts',
+    path: '/src/instruments/services/index.ts',
     searchRegex: /import \{ Container \} from 'inversify'/,
     type: 'after',
     text: `import {
@@ -45,7 +45,7 @@ export const NETWORK_MODULE_BIND_AXIOS: IInsertoIntoProjectFileParams[] = [
 } from 'services/HttpClientService'`,
   },
   {
-    path: '/src/Instruments/services/index.ts',
+    path: '/src/instruments/services/index.ts',
     searchRegex: /function bindServices\(container: Container\) \{/,
     type: 'after',
     text: `container.bind<IHttpClient>(HttpClientId).to(HttpClient)`,
@@ -54,7 +54,7 @@ export const NETWORK_MODULE_BIND_AXIOS: IInsertoIntoProjectFileParams[] = [
 
 export const NETWORK_MODULE_BIND_MOCK: IInsertoIntoProjectFileParams[] = [
   {
-    path: '/src/Instruments/services/index.ts',
+    path: '/src/instruments/services/index.ts',
     searchRegex: /import \{ Container \} from 'inversify'/,
     type: 'after',
     text: `import {
@@ -64,13 +64,13 @@ export const NETWORK_MODULE_BIND_MOCK: IInsertoIntoProjectFileParams[] = [
 } from './MockAdapter'`,
   },
   {
-    path: '/src/Instruments/services/index.ts',
+    path: '/src/instruments/services/index.ts',
     searchRegex: /function bindServices\(container: Container\) \{/,
     type: 'after',
     text: `container.bind<IMockAdapter>(MockAdapterId).to(MockAdapter)`,
   },
   {
-    path: '/src/Instruments/services/index.ts',
+    path: '/src/instruments/services/index.ts',
     searchRegex:
       /container.bind<IMockAdapter>\(MockAdapterId\).to\(MockAdapter\)/,
     type: 'after',

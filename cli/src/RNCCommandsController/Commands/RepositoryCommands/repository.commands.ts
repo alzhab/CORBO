@@ -31,18 +31,12 @@ export class RepositoryCommands implements IRepositoryCommands {
   }
 
   async createRepo(name?: string, endpoints: IEndpoint[] = []) {
-    const { fileName, folderName } = await this.validators.getValidName(
-      'repo',
-      name,
-    )
-    const folderPath = REPOSITORY_FOLDER_PATH + '/' + folderName
-
-    if (this.base.isInProjectExist(folderPath)) {
-      console.log(
-        chalk.red(`ERROR: REPOSITORY with name ${folderName} already exist`),
-      )
-      return
-    }
+    const { fileName, folderName, folderPath } =
+      await this.validators.getValidName({
+        suffix: 'repo',
+        name,
+        folderPath: REPOSITORY_FOLDER_PATH,
+      })
 
     this.base.createFolderInProject(folderPath)
     this.base.createFilesInProject(

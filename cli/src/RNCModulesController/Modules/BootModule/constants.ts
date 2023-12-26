@@ -7,7 +7,7 @@ export const BOOT_MODULE_TEMPLATE_PATH = './templates/Modules/Boot'
 export const BOOT_MODULE_CONFIG: ICopyToProject[] = [
   {
     type: 'folder',
-    pathTo: '/src/UI/components/templates',
+    pathTo: '/src/ui/components/templates',
     pathFrom: BOOT_MODULE_TEMPLATE_PATH + '/components/templates/Boot',
   },
 ]
@@ -30,19 +30,19 @@ export const BOOT_MODULE_BIND: IInsertoIntoProjectFileParams[] = [
 
 export const BOOT_MODULE_FLOW_CONFIG: IInsertoIntoProjectFileParams[] = [
   {
-    path: '/src/BusinessLogic/flow/flow.ts',
+    path: '/src/blm/root-flow/app-app-app-events.flow.ts',
     searchRegex: /import \{ autorun \} from 'mobx'/,
     text: `import { BootBlmId, IBootBlm } from '@corrbo/module-boot'`,
     type: 'after',
   },
   {
-    path: '/src/BusinessLogic/flow/flow.ts',
+    path: '/src/blm/root-flow/app-app-app-events.flow.ts',
     searchRegex: /constructor\(/,
     text: `@inject(BootBlmId) private bootBlm: IBootBlm,`,
     type: 'after',
   },
   {
-    path: '/src/BusinessLogic/flow/flow.ts',
+    path: '/src/blm/root-flow/app-app-app-events.flow.ts',
     searchRegex: / onAppInit\(\) \{/,
     text: `onHideBoot() {
     this.bootBlm.hideBoot()

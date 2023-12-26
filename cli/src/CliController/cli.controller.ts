@@ -73,13 +73,13 @@ export class CliController implements ICliController {
         const { confirmToIninit } = await inquirer.prompt([
           {
             name: 'confirmToIninit',
-            message: 'Do you want to install RNC Base ?',
+            message: 'Do you want to install Corbo Base ?',
             type: 'confirm',
           },
         ])
 
         if (confirmToIninit) {
-          this.RNCBaseController.init()
+          await this.RNCBaseController.init()
           shell.exit()
         } else {
           shell.exit()

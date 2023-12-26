@@ -8,18 +8,36 @@ export interface IValidators {
   isBootModuleInitialized: boolean
   isLocalizationModuleInitialized: boolean
   getIsDependenciesExist(list: string[]): boolean
-  getValidName(suffix?: string, name?: string): Promise<IValideName>
-  getValidEventName(name?: string): Promise<IValideEventName>
+  getValidName(data: IValidNameData): Promise<IValidName>
+  getValidEventName(name?: string): Promise<IValidEventName>
   getValidIconName(input: string): string
+  getValidNames(
+    data: IValidNamesData,
+    checkNameEnd?: string,
+  ): Promise<IValidName[]>
+  getComponentsNames(paramName?: string | string[]): Promise<string[]>
 }
 
-export interface IValideName {
+export interface IValidName {
   folderName: string
   fileName: string
+  folderPath: string
 }
 
-export interface IValideEventName {
+export interface IValidEventName {
   name: string
   transformedName: string
   functionName: string
+}
+
+export interface IValidNamesData {
+  folderPath: string
+  suffix?: string
+  name?: string | string[]
+}
+
+export interface IValidNameData {
+  folderPath: string
+  suffix?: string
+  name?: string
 }

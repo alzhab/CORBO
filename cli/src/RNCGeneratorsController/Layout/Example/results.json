@@ -6,7 +6,7 @@
     "alignItems": "center",
     "padding": 0,
     "gap": 16
-  }
+  },
   "children": [
     {
       "name": "avatar",

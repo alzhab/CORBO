@@ -23,9 +23,7 @@ export class RNCCommandsController implements IRNCCommandsController {
   constructor(
     @inject(ValidatorsId) private validators: IValidators,
     @inject(BlmCommandsId) private blmCommands: IBlmCommands,
-    @inject(StoreCommandsId) private storeCommands: IStoreCommands,
     @inject(ServiceCommandsId) private serviceCommands: IServiceCommands,
-    @inject(FlowCommandsId) private flowCommands: IFlowCommands,
     @inject(ScreenCommandsId) private screenCommands: IScreenCommands,
     @inject(RepositoryCommandsId)
     private repositoryCommands: IRepositoryCommands,
@@ -34,53 +32,47 @@ export class RNCCommandsController implements IRNCCommandsController {
   ) {}
 
   commands: { [key in ECommands]: (params: string[]) => void } = {
-    // BusinessLogic
-    [ECommands.Flow]: params => this.flowCommands.init(params),
+    // blm
     [ECommands.Blm]: params => this.blmCommands.init(params),
-    [ECommands.Store]: params => this.storeCommands.init(params),
 
-    // UI
-    [ECommands.Component]: params => this.componentCommands.init(params),
+    // ui
+    [ECommands.Component]: params => this.componentCommands.init(),
     [ECommands.Screen]: params => this.screenCommands.init(params),
 
-    // Instruments
+    // instruments
     [ECommands.Repository]: params => this.repositoryCommands.init(params, []),
     [ECommands.Service]: params => this.serviceCommands.init(params),
   }
 
   disabledCommands: { [key in ECommands]: boolean } = {
-    // BusinessLogic
-    [ECommands.Flow]: false,
+    // blm
     [ECommands.Blm]: false,
-    [ECommands.Store]: false,
 
-    // UI
+    // ui
     [ECommands.Component]: false,
     [ECommands.Screen]: false,
 
-    // Instruments
+    // instruments
     [ECommands.Repository]: !this.validators.isNetworkModuleInitialized,
     [ECommands.Service]: false,
   }
 
   variants = {
-    [ECommands.Flow]: ['flow'],
-    [ECommands.Blm]: ['blm'],
-    [ECommands.Store]: ['store'],
+    [ECommands.Blm]: ['blm', 'b'],
 
-    // UI
-    [ECommands.Component]: ['component'],
-    [ECommands.Screen]: ['screen'],
+    // ui
+    [ECommands.Component]: ['component', 'components', 'comp', 'c'],
+    [ECommands.Screen]: ['screen', 'scr', 's'],
 
-    // Instruments
-    [ECommands.Repository]: ['repository'],
-    [ECommands.Service]: ['service'],
+    // instruments
+    [ECommands.Repository]: ['repository', 'rep', 're'],
+    [ECommands.Service]: ['service', 'ser'],
   }
 
   async init(params: string[]) {
     const command = await this.getChoosedCommand(params)
 
-    await this.commands[command](params.slice(1))
+    await this.commands[command](params)
   }
 
   getChoosedCommand(options: string[]): Promise<ECommands> {
@@ -118,22 +110,12 @@ export class RNCCommandsController implements IRNCCommandsController {
     return [
       new inquirer.Separator('Business Logic'),
       {
-        value: ECommands.Flow,
-        name: ECommands.Flow,
-        disabled: this.disabledCommands[ECommands.Flow],
-      },
-      {
         value: ECommands.Blm,
         name: ECommands.Blm,
         disabled: this.disabledCommands[ECommands.Blm],
       },
-      {
-        value: ECommands.Store,
-        name: ECommands.Store,
-        disabled: this.disabledCommands[ECommands.Store],
-      },
 
-      new inquirer.Separator('UI'),
+      new inquirer.Separator('ui'),
       {
         value: ECommands.Component,
         name: ECommands.Component,
@@ -145,7 +127,7 @@ export class RNCCommandsController implements IRNCCommandsController {
         disabled: this.disabledCommands[ECommands.Screen],
       },
 
-      new inquirer.Separator('Instruments'),
+      new inquirer.Separator('instruments'),
       {
         value: ECommands.Repository,
         name: ECommands.Repository,

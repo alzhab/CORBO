@@ -1,5 +1,5 @@
 import { StatusBarProps } from 'react-native'
-import config from 'configs/Theme/config.json'
+import { CONFIG as config } from 'configs/Theme/config'
 
 const colors_types = config.colors
 const colors_default_name = Object.keys(config.colors)[0] as ColorsNames

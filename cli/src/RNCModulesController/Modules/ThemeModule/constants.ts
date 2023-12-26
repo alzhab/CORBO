@@ -2,7 +2,7 @@ import { ICopyToProject, IInsertoIntoProjectFileParams } from '../../../Base'
 
 export const THEME_TEMPLATE_PATH = './templates/Modules/ThemeModule'
 export const THEME_DEPENDENCIES = [
-  '@corrbo/modules/theme',
+  '@corrbo/module-theme',
   'react-native-size-matters',
 ]
 

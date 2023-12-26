@@ -13,6 +13,12 @@ export interface IBase {
   isFolderEmptyInProject(path: string): boolean
   getSVGContent(path: string): ISvgContent
   spinner(): () => void
+  getFoldersList(path: string): string[]
+  promiseListCall<D>(
+    names: Array<D>,
+    call: (item?: D) => Promise<any>,
+  ): Promise<void>
+  promiseOneByOne(pomises: (() => Promise<any>)[]): Promise<void>
 }
 
 export interface ICopyToProject {

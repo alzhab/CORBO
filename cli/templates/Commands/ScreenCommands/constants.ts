@@ -1,6 +1,6 @@
-import { IValideName } from '../../../src/Validators'
+import { IValidName } from '../../../src/Validators'
 
-export const SCREEN_FILE = (data: IValideName) => `import React from 'react'
+export const SCREEN_FILE = (data: IValidName) => `import React from 'react'
 import { observer } from 'mobx-react'
 import { Text, View } from 'react-native'
 

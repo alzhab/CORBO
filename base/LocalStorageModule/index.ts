@@ -1,3 +1,3 @@
-export * from './service'
-export * from './binder'
 export * from './hooks'
+export * from './services'
+export * from './binders'

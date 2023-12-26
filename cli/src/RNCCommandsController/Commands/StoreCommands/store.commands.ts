@@ -28,20 +28,14 @@ export class StoreCommands implements IStoreCommands {
   }
 
   async createStore(name?: string) {
-    const { fileName, folderName } = await this.validators.getValidName(
-      'store',
-      name,
-    )
-    const folderPath = STORE_FOLDER_PATH + '/' + folderName
+    const { fileName, folderName, folderPath } =
+      await this.validators.getValidName({
+        suffix: 'store',
+        name,
+        folderPath: STORE_FOLDER_PATH,
+      })
 
-    if (this.base.isInProjectExist(folderPath)) {
-      console.log(
-        chalk.red(`ERROR: STORE with name ${folderName} already exist`),
-      )
-      return
-    }
-
-    this.base.createFolderInProject(folderPath)
+    this.base.createFolderInProject(STORE_FOLDER_PATH)
     this.base.createFilesInProject(
       STORE_CREATE_FILES({ fileName, folderPath, folderName }),
     )

@@ -1,4 +1,3 @@
-export * from './binder'
+export * from './binders'
 export * from './services'
 export * from './blms'
-export * from './stores'

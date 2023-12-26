@@ -9,7 +9,7 @@ import {
 } from '../../../../templates/Commands/ServiceCommands/constants'
 import { ITemplateProps } from '../../../types'
 
-export const SERVICE_FOLDER_PATH = '/src/Instruments/services'
+export const SERVICE_FOLDER_PATH = '/src/instruments/services'
 
 export const SERVICE_CREATE_FILES: (
   data: ITemplateProps,

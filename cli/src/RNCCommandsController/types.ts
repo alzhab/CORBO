@@ -3,16 +3,14 @@ export interface IRNCCommandsController {
 }
 
 export enum ECommands {
-  // BusinessLogic
-  Flow = 'Flow',
-  Blm = 'BLM',
-  Store = 'Store',
+  // blm
+  Blm = 'Blm',
 
-  // UI
+  // ui
   Component = 'Component',
   Screen = 'Screen',
 
-  // Instruments
+  // instruments
   Repository = 'Repository',
   Service = 'Service',
 }

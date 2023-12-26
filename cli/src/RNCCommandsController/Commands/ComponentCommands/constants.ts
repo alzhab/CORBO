@@ -6,7 +6,7 @@ import {
 } from '../../../../templates/Commands/ComponentCommands/constants'
 import { ITemplateProps } from '../../../types'
 
-export const COMPONENT_FOLDER_PATH = '/src/UI/components'
+export const COMPONENT_FOLDER_PATH = '/src/ui/components'
 
 export const COMPONENT_CREATE_FILES: (
   data: ITemplateProps,

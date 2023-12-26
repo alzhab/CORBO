@@ -22,28 +22,28 @@ module.exports = function (api) {
         {
           root: ['./src'],
           alias: {
-            // UI
-            assets: path.resolve(__dirname, './src/UI/assets'),
-            icons: path.resolve(__dirname, './src/UI/assets/icons'),
-            atoms: path.resolve(__dirname, './src/UI/components/atoms'),
-            molecules: path.resolve(__dirname, './src/UI/components/molecules'),
-            organisms: path.resolve(__dirname, './src/UI/components/organisms'),
-            templates: path.resolve(__dirname, './src/UI/components/templates'),
-            screens: path.resolve(__dirname, './src/UI/screens'),
-            navigations: path.resolve(__dirname, './src/UI/navigations'),
-            // Instruments
-            hooks: path.resolve(__dirname, './src/Instruments/hooks'),
+            // ui
+            assets: path.resolve(__dirname, './src/ui/assets'),
+            icons: path.resolve(__dirname, './src/ui/assets/icons'),
+            atoms: path.resolve(__dirname, './src/ui/components/atoms'),
+            molecules: path.resolve(__dirname, './src/ui/components/molecules'),
+            organisms: path.resolve(__dirname, './src/ui/components/organisms'),
+            templates: path.resolve(__dirname, './src/ui/components/templates'),
+            screens: path.resolve(__dirname, './src/ui/screens'),
+            navigations: path.resolve(__dirname, './src/ui/navigations'),
+            // instruments
+            hooks: path.resolve(__dirname, './src/instruments/hooks'),
             repositories: path.resolve(
               __dirname,
-              './src/Instruments/repositories',
+              './src/instruments/repositories',
             ),
-            services: path.resolve(__dirname, './src/Instruments/services'),
-						types: path.resolve(__dirname, './src/Instruments/types'),
-						base: path.resolve(__dirname, './src/Instruments/base'),
+            services: path.resolve(__dirname, './src/instruments/services'),
+						types: path.resolve(__dirname, './src/instruments/types'),
+						base: path.resolve(__dirname, './src/instruments/base'),
             // Business Logic
-            blms: path.resolve(__dirname, './src/BusinessLogic/blms'),
-            flow: path.resolve(__dirname, './src/BusinessLogic/flow'),
-            stores: path.resolve(__dirname, './src/BusinessLogic/stores'),
+            blms: path.resolve(__dirname, './src/blm/blm'),
+            flow: path.resolve(__dirname, './src/blm/root-flow'),
+            stores: path.resolve(__dirname, './src/blm/stores'),
             // Configs
             configs: path.resolve(__dirname, './src/Configs'),
           },
