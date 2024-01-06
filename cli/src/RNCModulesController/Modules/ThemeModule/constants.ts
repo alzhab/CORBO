@@ -10,20 +10,20 @@ export const THEME_BIND: IInsertoIntoProjectFileParams[] = [
   {
     path: '/src/binders.ts',
     type: 'before',
-    text: "import { bindThemeModule, ThemeStoreId } from '@corrbo/modules/theme';\n",
+    content: "import { bindThemeModule, ThemeStoreId } from '@corrbo/modules/theme';\n",
     searchRegex: /export const BINDERS = \[/,
   },
   {
     path: '/src/binders.ts',
     type: 'after',
-    text: `  // theme module
+    content: `  // theme module
   bindThemeModule,`,
     searchRegex: /export const BINDERS = \[/,
   },
   {
     path: '/src/binders.ts',
     type: 'after',
-    text: `  // theme module
+    content: `  // theme module
   ThemeStoreId,`,
     searchRegex: /export const HYDRATED_STORES = \[/,
   },

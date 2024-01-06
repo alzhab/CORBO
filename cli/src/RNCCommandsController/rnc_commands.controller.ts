@@ -3,8 +3,6 @@ import { ECommands, IRNCCommandsController } from './types'
 import inquirer from 'inquirer'
 import { BlmCommandsId, IBlmCommands } from './Commands/BLMCommands'
 import { IServiceCommands, ServiceCommandsId } from './Commands/ServiceCommands'
-import { IStoreCommands, StoreCommandsId } from './Commands/StoreCommands'
-import { FlowCommandsId, IFlowCommands } from './Commands/FlowCommands'
 import { IScreenCommands, ScreenCommandsId } from './Commands/ScreenCommands'
 import { IValidators, ValidatorsId } from '../Validators'
 import {
@@ -40,7 +38,7 @@ export class RNCCommandsController implements IRNCCommandsController {
     [ECommands.Screen]: params => this.screenCommands.init(params),
 
     // instruments
-    [ECommands.Repository]: params => this.repositoryCommands.init(params, []),
+    [ECommands.Repository]: params => this.repositoryCommands.init(params),
     [ECommands.Service]: params => this.serviceCommands.init(params),
   }
 

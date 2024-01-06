@@ -16,13 +16,13 @@ export const BOOT_MODULE_BIND: IInsertoIntoProjectFileParams[] = [
   {
     path: '/src/binders.ts',
     type: 'before',
-    text: "import { bindBootModule } from '@corrbo/module-boot'",
+    content: "import { bindBootModule } from '@corrbo/module-boot'",
     searchRegex: /export const BINDERS = \[/,
   },
   {
     path: '/src/binders.ts',
     type: 'after',
-    text: `  // boot module
+    content: `  // boot module
   bindBootModule,`,
     searchRegex: /export const BINDERS = \[/,
   },
@@ -32,19 +32,19 @@ export const BOOT_MODULE_FLOW_CONFIG: IInsertoIntoProjectFileParams[] = [
   {
     path: '/src/blm/root-flow/app-app-app-events.flow.ts',
     searchRegex: /import \{ autorun \} from 'mobx'/,
-    text: `import { BootBlmId, IBootBlm } from '@corrbo/module-boot'`,
+    content: `import { BootBlmId, IBootBlm } from '@corrbo/module-boot'`,
     type: 'after',
   },
   {
     path: '/src/blm/root-flow/app-app-app-events.flow.ts',
     searchRegex: /constructor\(/,
-    text: `@inject(BootBlmId) private bootBlm: IBootBlm,`,
+    content: `@inject(BootBlmId) private bootBlm: IBootBlm,`,
     type: 'after',
   },
   {
     path: '/src/blm/root-flow/app-app-app-events.flow.ts',
     searchRegex: / onAppInit\(\) \{/,
-    text: `onHideBoot() {
+    content: `onHideBoot() {
     this.bootBlm.hideBoot()
     this.appEventsStore.removeEvent()
   }`,
@@ -54,19 +54,19 @@ export const BOOT_MODULE_FLOW_CONFIG: IInsertoIntoProjectFileParams[] = [
     path: '/src/EntryPoint.tsx',
     searchRegex: /import \{ Navigation \} from 'navigations\/Navigation'/,
     type: 'after',
-    text: "import { useBootBlm } from '@corrbo/module-boot'\nimport { Boot } from 'templates/Boot'",
+    content: "import { useBootBlm } from '@corrbo/module-boot'\nimport { Boot } from 'templates/Boot'",
   },
   {
     path: '/src/EntryPoint.tsx',
     searchRegex: /const EntryPoint = observer\(\(\) => \{/,
     type: 'after',
-    text: 'const { hideBoot } = useBootBlm()',
+    content: 'const { hideBoot } = useBootBlm()',
   },
   {
     path: '/src/EntryPoint.tsx',
     searchRegex: /return <Navigation \/>/,
     type: 'replace',
-    text: `  return (
+    content: `  return (
     <>
       {hideBoot && <Navigation />}
 

@@ -61,7 +61,7 @@ export class CliController implements ICliController {
           return this.calls[variant](options.slice(1))
         })
         .then(() => {
-          this.base.lintProjectFiles()
+          // this.base.lintProjectFiles()
         })
     })
   }

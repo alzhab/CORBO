@@ -37,14 +37,14 @@ export const REPOSITORY_BIND_CONFIGURATION: (
   fileName,
 }) => [
   {
-    path: REPOSITORY_FOLDER_PATH + '/' + 'index.ts',
-    text: `import { I${folderName}, ${folderName}Id, ${folderName} } from 'repositories/${folderName}'\n`,
+    path: REPOSITORY_FOLDER_PATH + '/' + 'binder.ts',
+    content: `import { I${folderName}, ${folderName}Id, ${folderName} } from 'repositories/${folderName}'\n`,
     type: 'before',
     searchRegex: /function bindRepositories\(container: Container\) \{/,
   },
   {
-    path: REPOSITORY_FOLDER_PATH + '/' + 'index.ts',
-    text: `container.bind<I${folderName}>(${folderName}Id).to(${folderName})`,
+    path: REPOSITORY_FOLDER_PATH + '/' + 'binder.ts',
+    content: `container.bind<I${folderName}>(${folderName}Id).to(${folderName})`,
     type: 'after',
     searchRegex: /function bindRepositories\(container: Container\) \{/,
   },

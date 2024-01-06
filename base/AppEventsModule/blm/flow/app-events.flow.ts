@@ -2,7 +2,7 @@ import {inject, injectable} from 'inversify';
 import {autorun} from 'mobx';
 import {EAppEvents, IAppEventsFlow} from './types';
 import {AppEventsStoreId, IAppEventsStore} from '../store';
-import {IFlowReactions} from 'base/root-flow';
+import {EFlowEvents, IFlowReactions} from 'base/root-flow';
 import {AppEventsActionsId, IAppEventsActions} from '../actions';
 
 export const AppEventsFlowsId = Symbol.for('AppEventsFlows')
@@ -15,32 +15,31 @@ export class AppEventsFlow implements IAppEventsFlow {
   ) {}
   
   get reactions(): IFlowReactions {
-    return {
-      [EAppEvents.APP_INIT]: this.onAppInit,
-    }
-  }
-  
-  onAppInit() {
-    this.appEventsStore.setIsAppInitialized(true)
+    return {}
   }
   
   subscibeToEvents(reactions: IFlowReactions): void {
     autorun(
       () => {
         const event = this.appEventsStore.event
+        console.log({event});
         if (event?.key) {
           this.appEventsStore.removeEvent()
           const func = reactions[event.key].bind(this) as any
-          func(event.data)
+          if (func) {
+            func(event.data)
+          } else {
+            console.log('Event function not found: ')
+          }
         }
       },
       {
         onError: error => {
-          console.log('RootFlow Error: ',error)
+          console.log('RootFlow Error: ',JSON.stringify(error, null, 2))
         },
       },
     )
     
-    this.appEventActions.emitEvent({ event: EAppEvents.APP_INIT })
+    this.appEventActions.emitEvent({ event: EFlowEvents.ON_APP_OPEN})
   }
 }

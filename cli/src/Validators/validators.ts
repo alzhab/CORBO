@@ -181,7 +181,7 @@ export class Validators implements IValidators {
   getSplittedWords(name: string) {
     return (
       name
-        .replace(/([a-z])([A-Z])/g, '$1 $2')
+        .replace(/([a-z])([A-Z])|-/g, '$1 $2')
         .split(' ')
         // удалить суфикс
         .filter(

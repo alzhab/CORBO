@@ -63,15 +63,15 @@ export const BLM_BIND_CONFIGURATION: (
 ) => IInsertoIntoProjectFileParams[] = ({ folderName }: ITemplateProps) => [
   {
     path: BLM_FOLDER_PATH + '/' + 'binders.ts',
-    text: `import { bind${folderName} } from './${folderName}'`,
+    content: `import { bind${folderName} } from './${folderName}'`,
     type: 'before',
     searchRegex: /export const BLMS_BINDERS/,
   },
   {
     path: BLM_FOLDER_PATH + '/' + 'binders.ts',
-    text: `bind${folderName},`,
-    type: 'before',
-    searchRegex: /]/,
+    content: `bind${folderName},`,
+    type: 'after',
+    searchRegex: /\[/,
   },
 ]
 
@@ -89,24 +89,24 @@ export const BLM_ACTIONS_BIND_CONFIGURATION: (
 ) => IInsertoIntoProjectFileParams[] = (data: ITemplateProps) => [
   {
     path: data.folderPath + `/../binder.ts`,
-    text: `import {${data.folderName}, ${data.folderName}Id, I${data.folderName}} from './actions';\n`,
+    content: `import {${data.folderName}, ${data.folderName}Id, I${data.folderName}} from './actions';\n`,
     type: 'after',
     searchRegex: new RegExp(/import { Container } from 'inversify'/),
   },
   {
     path: data.folderPath + `/../binder.ts`,
-    text: `  container.bind<I${data.folderName}>(${data.folderName}Id).to(${data.folderName})`,
+    content: `  container.bind<I${data.folderName}>(${data.folderName}Id).to(${data.folderName})`,
     type: 'after',
     searchRegex: new RegExp(/\(container: Container\) => {/),
   },
   {
     path: data.folderPath + `/types.ts`,
-    text: TYPES_TEMPLATE(data),
+    content: TYPES_TEMPLATE(data),
     type: 'end',
   },
   {
     path: data.folderPath + `/index.ts`,
-    text: `export * from './${data.fileName}'`,
+    content: `export * from './${data.fileName}'`,
     type: 'end',
   },
 ]
@@ -125,24 +125,24 @@ export const BLM_STORE_BIND_CONFIGURATION: (
 ) => IInsertoIntoProjectFileParams[] = (data: ITemplateProps) => [
   {
     path: data.folderPath + `/../binder.ts`,
-    text: `import {${data.folderName}, ${data.folderName}Id, I${data.folderName}} from './store';\n`,
+    content: `import {${data.folderName}, ${data.folderName}Id, I${data.folderName}} from './store';\n`,
     type: 'after',
     searchRegex: new RegExp(/import { Container } from 'inversify'/),
   },
   {
     path: data.folderPath + `/../binder.ts`,
-    text: `  container.bind<I${data.folderName}>(${data.folderName}Id).to(${data.folderName})`,
+    content: `  container.bind<I${data.folderName}>(${data.folderName}Id).to(${data.folderName})`,
     type: 'after',
     searchRegex: new RegExp(/\(container: Container\) => {/),
   },
   {
     path: data.folderPath + `/types.ts`,
-    text: TYPES_TEMPLATE(data),
+    content: TYPES_TEMPLATE(data),
     type: 'end',
   },
   {
     path: data.folderPath + `/index.ts`,
-    text: `export * from './${data.fileName}'`,
+    content: `export * from './${data.fileName}'`,
     type: 'end',
   },
 ]
@@ -161,7 +161,7 @@ export const UI_ADAPTER_BIND_CONFIGURATION: (
 ) => IInsertoIntoProjectFileParams[] = (data: ITemplateProps) => [
   {
     path: data.folderPath + `/index.ts`,
-    text: `export * from './${data.fileName}'`,
+    content: `export * from './${data.fileName}'`,
     type: 'end',
   },
 ]
@@ -181,53 +181,53 @@ export const FLOW_BIND_CONFIGURATION: (
 ) => IInsertoIntoProjectFileParams[] = (data: ITemplateProps, blmName) => [
   {
     path: data.folderPath + `/index.ts`,
-    text: `export * from './${data.fileName}'`,
+    content: `export * from './${data.fileName}'`,
     type: 'end',
   },
   {
     path: data.folderPath + `/types.ts`,
-    text: FLOW_TYPES_TEMPLATE(data),
+    content: FLOW_TYPES_TEMPLATE(data),
     type: 'end',
   },
   {
     path: data.folderPath + `/../binder.ts`,
-    text: `import {${data.folderName}, ${data.folderName}Id, I${data.folderName}} from './store';\n`,
+    content: `import {${data.folderName}, ${data.folderName}Id, I${data.folderName}} from './flow';\n`,
     type: 'after',
     searchRegex: new RegExp(/import { Container } from 'inversify'/),
   },
   {
     path: data.folderPath + `/../binder.ts`,
-    text: `  container.bind<I${data.folderName}>(${data.folderName}Id).to(${data.folderName})`,
+    content: `  container.bind<I${data.folderName}>(${data.folderName}Id).to(${data.folderName})`,
     type: 'after',
     searchRegex: new RegExp(/\(container: Container\) => {/),
   },
   {
     path: ROOT_FLOW_PATH + `/types.ts`,
-    text: `import { E${data.folderName}Events, I${data.folderName}Data } from 'blms/${blmName}'`,
+    content: `import { E${data.folderName}Events, I${data.folderName}Data } from 'blms/${blmName}'`,
     type: 'before',
     searchRegex: new RegExp(/export interface IBaseFlow {/),
   },
   {
     path: ROOT_FLOW_PATH + `/types.ts`,
-    text: `E${data.folderName}Events & `,
+    content: `E${data.folderName}Events & `,
     type: 'after',
     searchRegex: new RegExp(/export type EFlowEvents = /),
   },
   {
     path: ROOT_FLOW_PATH + `/types.ts`,
-    text: `...E${data.folderName}Events,`,
+    content: `...E${data.folderName}Events,`,
     type: 'after',
     searchRegex: new RegExp(/export const EFlowEvents = {/),
   },
   {
     path: ROOT_FLOW_PATH + `/types.ts`,
-    text: `I${data.folderName}Data &`,
+    content: `I${data.folderName}Data &`,
     type: 'after',
     searchRegex: new RegExp(/export type IFlowReactionsData = /),
   },
   {
     path: ROOT_FLOW_PATH + `/root-flow.ts`,
-    text: `import { I${data.folderName}, ${data.folderName}Id } from 'blms/${blmName}'`,
+    content: `import { I${data.folderName}, ${data.folderName}Id } from 'blms/${blmName}'`,
     type: 'before',
     searchRegex: new RegExp(
       /export const RootFlowId = Symbol.for\('RootFlow'\)/,
@@ -235,7 +235,7 @@ export const FLOW_BIND_CONFIGURATION: (
   },
   {
     path: ROOT_FLOW_PATH + `/root-flow.ts`,
-    text: `@inject(${data.folderName}Id) private ${data.folderName}: I${data.folderName},`,
+    content: `@inject(${data.folderName}Id) private ${data.folderName}: I${data.folderName},`,
     type: 'after',
     searchRegex: new RegExp(
       /@inject\(AppEventsFlowsId\) private appEvents: IAppEventsFlow,/,
@@ -243,7 +243,7 @@ export const FLOW_BIND_CONFIGURATION: (
   },
   {
     path: ROOT_FLOW_PATH + `/root-flow.ts`,
-    text: `...this.${data.folderName}.reactions,`,
+    content: `...this.${data.folderName}.reactions,`,
     type: 'after',
     searchRegex: new RegExp(/...this.appEvents.reactions,/),
   },

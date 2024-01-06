@@ -21,9 +21,4 @@ export class AppEventsStore implements IAppEventsStore {
   removeEvent(): void {
     this.event = null
   }
-  
-  isAppInitialized: boolean= false
-  setIsAppInitialized(val: boolean): void {
-    this.isAppInitialized   = val
-  }
 }

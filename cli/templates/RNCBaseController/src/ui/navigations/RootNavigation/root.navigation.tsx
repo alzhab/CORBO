@@ -6,7 +6,7 @@ import { HomeScreen } from 'screens/HomeScreen'
 const Nav = createStackNavigator<RootNavigationParamsMap>()
 
 export const RootNavigation: FC<{
-  initialScreen: keyof RootNavigationParamsMap | null
+  initialScreen: keyof RootNavigationParamsMap
 }> = ({ initialScreen }) => {
   return (
     <Nav.Navigator

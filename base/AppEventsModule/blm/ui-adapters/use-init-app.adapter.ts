@@ -1,27 +1,21 @@
-import { useEffect, useMemo } from 'react'
-import { useInjection } from 'inversify-react'
-import { useIsStoresHydrated } from '@corrbo/base/LocalStorageModule'
-import {
-  AppEventsStoreId,
-  IAppEventsStore,
-} from '../store'
+import {useEffect, useMemo} from 'react';
+import {useInjection} from 'inversify-react';
+import {useIsStoresHydrated} from '@corrbo/base/LocalStorageModule';
 import {useInitialScreenAdapter} from '@corrbo/base/NavigationModule';
 import {IRootFlow} from 'base/root-flow/types';
 import {RootFlowId} from 'base/root-flow/root-flow';
 
 export const useInitAppAdapter = (hydratedStoresIds: symbol[]) => {
   const rootFlow = useInjection<IRootFlow>(RootFlowId)
-  const store = useInjection<IAppEventsStore>(AppEventsStoreId)
-  const { isNavigationReady } = useInitialScreenAdapter()
+  
+  const { isNavigationReady , initialScreen} = useInitialScreenAdapter()
   
   const isStoresHydrated = useIsStoresHydrated(hydratedStoresIds)
-  const isAppInitialized = useMemo(
-    () => store.isAppInitialized,
-    [store.isAppInitialized],
-  )
   
-  const hideBoot = useMemo(() => isAppInitialized  && isNavigationReady, [
-    isAppInitialized, isNavigationReady
+  const isAppInitialized = useMemo(() => !!initialScreen, [initialScreen])
+  
+  const hideBoot = useMemo(() =>  isNavigationReady && !!initialScreen, [
+    isNavigationReady, initialScreen
   ])
   
   useEffect(() => {

@@ -37,13 +37,13 @@ export const SERVICE_BIND_CONFIGURATION: (
 }: ITemplateProps) => [
   {
     path: SERVICE_FOLDER_PATH + '/' + 'index.ts',
-    text: `import { I${folderName}, ${folderName}Id, ${folderName} } from 'services/${folderName}'\n`,
+    content: `import { I${folderName}, ${folderName}Id, ${folderName} } from 'services/${folderName}'\n`,
     type: 'before',
     searchRegex: /function bindServices\(container: Container\) \{/,
   },
   {
     path: SERVICE_FOLDER_PATH + '/' + 'index.ts',
-    text: `container.bind<I${folderName}>(${folderName}Id).to(${folderName})`,
+    content: `container.bind<I${folderName}>(${folderName}Id).to(${folderName})`,
     type: 'after',
     searchRegex: /function bindServices\(container: Container\) \{/,
   },

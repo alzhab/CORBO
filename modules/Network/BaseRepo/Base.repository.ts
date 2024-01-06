@@ -1,119 +1,71 @@
-import axios, { AxiosInstance, AxiosRequestConfig } from 'axios'
+import { AxiosInstance, AxiosResponse } from 'axios'
 import { inject, injectable } from 'inversify'
-import { HttpType, IBaseMock, IGetErrorValue } from './types'
-import { HttpClientId, IHttpClient } from '../services'
+import { ContentType, FullRequestParams, IBaseRest } from './types'
+import { HttpClientId, IHttpClient } from 'services/HttpClientService'
 
 @injectable()
-export class BaseMock implements IBaseMock {
+export class BaseRest implements IBaseRest {
   $http: AxiosInstance
   $mockHttp: AxiosInstance
-
+  secure: string = ''
+  
   constructor(@inject(HttpClientId) private httpClient: IHttpClient) {
     this.$http = httpClient.$axios
     this.$mockHttp = httpClient.$mockAxios
   }
-
-  async get(url: string, params?: AxiosRequestConfig, type?: HttpType) {
-    try {
-      const http = this.getHttp(type)
-      return await http.get(url, params)
-    } catch (e) {
-      console.log('HTTP GET Error', { e: JSON.stringify(e, null, 2), url })
-      return Promise.reject(e)
-    }
+  
+  getInstance(isMock: boolean | undefined) {
+    return isMock ? this.$mockHttp : this.$http
   }
-
-  async post(
-    url: string,
-    body: { [key in string]: any },
-    params?: AxiosRequestConfig,
-    type?: HttpType,
-  ) {
-    try {
-      const http = this.getHttp(type)
-      return await http.post(url, body, params)
-    } catch (e) {
-      return Promise.reject(e)
-    }
-  }
-
-  async put(
-    url: string,
-    data?: { [key in string]: any },
-    params?: AxiosRequestConfig,
-    type?: HttpType,
-  ) {
-    try {
-      const http = this.getHttp(type)
-      return await http.put(url, data, params)
-    } catch (e) {
-      console.log('HTTP PUT Error', { e, url })
-      return Promise.reject(e)
-    }
-  }
-
-  async patch(
-    url: string,
-    data?: { [key in string]: any },
-    params?: AxiosRequestConfig,
-    type?: HttpType,
-  ) {
-    try {
-      const http = this.getHttp(type)
-      return await http.patch(url, data, params)
-    } catch (e) {
-      console.log('HTTP PATCH Error', { e, url })
-      return Promise.reject(e)
-    }
-  }
-
-  async delete(url: string, params?: AxiosRequestConfig, type?: HttpType) {
-    try {
-      const http = this.getHttp(type)
-      return await http.delete(url, params)
-    } catch (e) {
-      console.log('HTTP DELETE Error', { e, url })
-      return Promise.reject(e)
-    }
-  }
-
-  getError(error: any): Promise<IGetErrorValue> {
-    if (axios.isAxiosError(error)) {
-      if (error) {
-        console.log(error.response)
-        return Promise.reject({
-          error,
-          message:
-            error?.response?.data.message || error.message || 'Unknown error',
-        })
-      } else {
-        return Promise.reject({ error, message: 'Error is empty' })
-      }
+  
+  protected stringifyFormItem(formItem: unknown) {
+    if (typeof formItem === 'object' && formItem !== null) {
+      return JSON.stringify(formItem)
     } else {
-      return Promise.reject({ error, message: 'Not Axios error' })
+      return `${formItem}`
     }
   }
-
-  getFormData(data: any): FormData {
-    const formData = new FormData()
-
-    for (const dataKey in data) {
-      if (data.hasOwnProperty(dataKey)) {
-        const value = data[dataKey]
-
-        formData.append(dataKey, value)
+  
+  protected createFormData(input: Record<string, unknown>): FormData {
+    return Object.keys(input || {}).reduce((formData, key) => {
+      const property = input[key]
+      const propertyContent: any[] = property instanceof Array ? property : [property]
+      
+      for (const formItem of propertyContent) {
+        const isFileType = formItem instanceof Blob || formItem instanceof File
+        formData.append(key, isFileType ? formItem : this.stringifyFormItem(formItem))
       }
-    }
-
-    return formData
+      
+      return formData
+    }, new FormData())
   }
-
-  getHttp(type: HttpType = 'default') {
-    switch (type) {
-      case 'mock':
-        return this.$mockHttp
-      default:
-        return this.$http
+  
+  public request = async <T = any>({
+                                     path,
+                                     type,
+                                     query,
+                                     body,
+                                     ...params
+                                   }: FullRequestParams): Promise<AxiosResponse<T>> => {
+    const requestParams = params
+    
+    if (type === ContentType.FormData && body && typeof body === 'object') {
+      body = this.createFormData(body as Record<string, unknown>)
     }
+    
+    if (type === ContentType.Text && body && typeof body !== 'string') {
+      body = JSON.stringify(body)
+    }
+    
+    return this.getInstance(params.isMock).request({
+      ...requestParams,
+      headers: {
+        ...(requestParams.headers || {}),
+        ...(type && type !== ContentType.FormData ? { 'Content-Type': type } : {}),
+      },
+      params: query,
+      data: body,
+      url: path,
+    })
   }
 }

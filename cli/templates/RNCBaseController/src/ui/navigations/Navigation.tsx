@@ -29,7 +29,7 @@ export const Navigation = observer(() => {
   return (
     <>
       <NavigationContainer ref={navigationRef} onReady={onReady}>
-        <RootNavigation initialScreen={initialScreen} />
+        {initialScreen && <RootNavigation initialScreen={initialScreen} />}
       </NavigationContainer>
     </>
   )

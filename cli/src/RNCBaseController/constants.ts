@@ -65,13 +65,13 @@ export const TEMPLATE_PATHES: ICopyToProject[] = [
 export const NAVIGATION_CONFIGURATION: IInsertoIntoProjectFileParams[] = [
   {
     path: '/android/app/src/main/java/com/**/**/MainActivity.*',
-    text: 'import android.os.Bundle;',
+    content: 'import android.os.Bundle;',
     type: 'before',
     searchRegex: new RegExp('import com.facebook.react.ReactActivity;'),
   },
   {
     path: '/android/app/src/main/java/com/**/**/MainActivity.*',
-    text: `  /**
+    content: `  /**
    * React navigation additional configuration step to properly work on Android devices
    */
   @Override

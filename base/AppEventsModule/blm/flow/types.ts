@@ -4,11 +4,7 @@ export type IAppEventsFlow = IBaseFlow & {
   subscibeToEvents(reactions: IFlowReactions): void
 }
 
-export enum EAppEvents {
-  APP_INIT = 'APP_INIT',
-}
+export enum EAppEvents {}
 
-export type IAppEventsData = {
-  [EAppEvents.APP_INIT]: undefined
-}
+export type IAppEventsData = {}
 

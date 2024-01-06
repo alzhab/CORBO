@@ -34,7 +34,7 @@ export interface ICreateFileInProject {
 
 export interface IInsertoIntoProjectFileParams {
   path: string
-  text: string
+  content: string
   type: 'after' | 'before' | 'end' | 'start' | 'replace'
   searchRegex?: RegExp
 }

@@ -10,20 +10,10 @@ import {
   IBlmCommands,
 } from './Commands/BLMCommands'
 import {
-  IStoreCommands,
-  StoreCommands,
-  StoreCommandsId,
-} from './Commands/StoreCommands'
-import {
   IServiceCommands,
   ServiceCommands,
   ServiceCommandsId,
 } from './Commands/ServiceCommands'
-import {
-  FlowCommands,
-  FlowCommandsId,
-  IFlowCommands,
-} from './Commands/FlowCommands'
 import {
   IScreenCommands,
   ScreenCommands,
@@ -45,9 +35,7 @@ export const bindCommands = (container: Container) => {
     .bind<IRNCCommandsController>(RNCCommandsControllerId)
     .to(RNCCommandsController)
   container.bind<IBlmCommands>(BlmCommandsId).to(BlmCommands)
-  container.bind<IStoreCommands>(StoreCommandsId).to(StoreCommands)
   container.bind<IServiceCommands>(ServiceCommandsId).to(ServiceCommands)
-  container.bind<IFlowCommands>(FlowCommandsId).to(FlowCommands)
   container.bind<IScreenCommands>(ScreenCommandsId).to(ScreenCommands)
   container
     .bind<IRepositoryCommands>(RepositoryCommandsId)

@@ -69,7 +69,7 @@ export class Base implements IBase {
   updateEnv(data: { [key: string]: string }) {
     this.insertoIntoProjectFile([
       {
-        text: Object.keys(data)
+        content: Object.keys(data)
           .map(key => `${key}=${data[key]}`)
           .join('\n'),
         path: '/.env',
@@ -77,7 +77,7 @@ export class Base implements IBase {
       },
       {
         path: '/src/instruments/types/env.d.ts',
-        text: Object.keys(data)
+        content: Object.keys(data)
           .map(key => `  export const ${key}: string`)
           .join('\n'),
         searchRegex: /declare module '@env' {/,
@@ -86,7 +86,7 @@ export class Base implements IBase {
       {
         path: '/babel.config.js',
         type: 'after',
-        text: Object.keys(data)
+        content: Object.keys(data)
           .map(item => `'${item}',`)
           .join('\n'),
         searchRegex: /allowlist: \[/,
@@ -107,14 +107,14 @@ export class Base implements IBase {
         case 'end': {
           const content = shell.cat(PROJECT_PATH + item.path)
           shell
-            .ShellString(content + '\n' + item.text)
+            .ShellString(content + '\n' + item.content)
             .to(PROJECT_PATH + item.path)
           break
         }
         case 'start': {
           const content = shell.cat(PROJECT_PATH + item.path)
           shell
-            .ShellString(item.text + '\n' + content)
+            .ShellString(item.content + '\n' + content)
             .to(PROJECT_PATH + item.path)
           break
         }
@@ -123,7 +123,7 @@ export class Base implements IBase {
             shell.sed(
               '-i',
               item.searchRegex,
-              `${searchRegexString} \n ${item.text}`,
+              `${searchRegexString} \n ${item.content}`,
               PROJECT_PATH + item.path,
             )
           } else {
@@ -139,7 +139,7 @@ export class Base implements IBase {
             shell.sed(
               '-i',
               item.searchRegex,
-              `${item.text} \n ${searchRegexString}`,
+              `${item.content} \n ${searchRegexString}`,
               PROJECT_PATH + item.path,
             )
           } else {
@@ -155,7 +155,7 @@ export class Base implements IBase {
             shell.sed(
               '-i',
               item.searchRegex,
-              item.text + '\n',
+              item.content + '\n',
               PROJECT_PATH + item.path,
             )
           } else {

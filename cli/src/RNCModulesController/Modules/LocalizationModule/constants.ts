@@ -19,20 +19,20 @@ export const LOCALIZATION_MODULE_BIND: IInsertoIntoProjectFileParams[] = [
   {
     path: '/src/binders.ts',
     type: 'before',
-    text: "import { bindLocalizationModule, LocalizationStoreId } from '@corrbo/module-localization';\n",
+    content: "import { bindLocalizationModule, LocalizationStoreId } from '@corrbo/module-localization';\n",
     searchRegex: /export const BINDERS = \[/,
   },
   {
     path: '/src/binders.ts',
     type: 'after',
-    text: `  // localizatoin module
+    content: `  // localizatoin module
   bindLocalizationModule,`,
     searchRegex: /export const BINDERS = \[/,
   },
   {
     path: '/src/binders.ts',
     type: 'after',
-    text: `  // localization module
+    content: `  // localization module
   LocalizationStoreId,`,
     searchRegex: /export const HYDRATED_STORES = \[/,
   },
