@@ -69,3 +69,41 @@ export const MODEL_TYPE_TEMPLATE = (data: {
   content: string
 }) => `export type ${data.name} = ${data.content}
 `
+
+export const MOCK_CONFIG_ROUTE_TEMPLATE = (data: {
+  path: string
+  response: { status: number; data: any }
+  method: string
+}) => {
+  const routeConf: any = {
+    GET: {
+      responses: {},
+      defaultResponse: 200,
+    },
+    POST: {
+      responses: {},
+      defaultResponse: 200,
+    },
+    PUT: {
+      responses: {},
+      defaultResponse: 200,
+    },
+    PATCH: {
+      responses: {},
+      defaultResponse: 200,
+    },
+    DELETE: {
+      responses: {},
+      defaultResponse: 200,
+    },
+  }
+
+  routeConf[data.method].responses[data.response.status] = data.response.data
+
+  return `'${data.path}': ${JSON.stringify(routeConf, null, 2)},`
+}
+
+export const MOCK_CONFIG_RESPONSE_TEMPLATE = (data: {
+  response: { status: number; data: any }
+}) =>
+  `${+data.response.status}: ${JSON.parse(JSON.stringify(data.response.data))}`

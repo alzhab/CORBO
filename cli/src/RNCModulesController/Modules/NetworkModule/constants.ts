@@ -27,9 +27,9 @@ export const NETWORK_MODULE_INSERT_MOCK: ICopyToProject[] = [
     pathTo: '/src/instruments/services',
   },
   {
-    pathFrom: NETWORK_MODULE_TEMPLATE_PATH + '/Configs/MockData',
+    pathFrom: NETWORK_MODULE_TEMPLATE_PATH + '/configs/MockData',
     type: 'folder',
-    pathTo: '/src/Configs',
+    pathTo: '/src/configs',
   },
 ]
 

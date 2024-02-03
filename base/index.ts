@@ -1,6 +1,3 @@
-import * as AppEventsModule from './AppEventsModule'
-import * as IOCModule from './IOC'
-import * as LocalStorageModule from './LocalStorageModule'
-import * as NavigationModule from './NavigationModule'
+import * as IOCModule from './IOC';
 
-export { AppEventsModule, IOCModule, LocalStorageModule, NavigationModule }
+export { IOCModule }

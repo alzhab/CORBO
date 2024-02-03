@@ -32,7 +32,7 @@ export const THEME_BIND: IInsertoIntoProjectFileParams[] = [
 export const THEME_COPY: ICopyToProject[] = [
   {
     pathFrom: THEME_TEMPLATE_PATH + '/Theme',
-    pathTo: '/src/Configs/',
+    pathTo: '/src/configs/',
   },
   {
     pathFrom: THEME_TEMPLATE_PATH + '/react-native.config.js',

@@ -13,6 +13,8 @@ import {
   ComponentCommandsId,
   IComponentCommands,
 } from './Commands/ComponentCommands'
+import { TCommandReturn } from '../types'
+import minimist from 'minimist'
 
 export const RNCCommandsControllerId = Symbol.for('RNCCommandsControllerId')
 
@@ -29,17 +31,19 @@ export class RNCCommandsController implements IRNCCommandsController {
     private componentCommands: IComponentCommands,
   ) {}
 
-  commands: { [key in ECommands]: (params: string[]) => void } = {
+  commands: {
+    [key in ECommands]: () => Promise<TCommandReturn>
+  } = {
     // blm
-    [ECommands.Blm]: params => this.blmCommands.init(params),
+    [ECommands.Blm]: () => this.blmCommands.init(),
 
     // ui
-    [ECommands.Component]: params => this.componentCommands.init(),
-    [ECommands.Screen]: params => this.screenCommands.init(params),
+    [ECommands.Component]: () => this.componentCommands.init(),
+    [ECommands.Screen]: () => this.screenCommands.init(),
 
     // instruments
-    [ECommands.Repository]: params => this.repositoryCommands.init(params),
-    [ECommands.Service]: params => this.serviceCommands.init(params),
+    [ECommands.Repository]: () => this.repositoryCommands.init(),
+    [ECommands.Service]: () => this.serviceCommands.init(),
   }
 
   disabledCommands: { [key in ECommands]: boolean } = {
@@ -67,15 +71,17 @@ export class RNCCommandsController implements IRNCCommandsController {
     [ECommands.Service]: ['service', 'ser'],
   }
 
-  async init(params: string[]) {
-    const command = await this.getChoosedCommand(params)
+  async init() {
+    const command = await this.getChoosedCommand()
 
-    await this.commands[command](params)
+    await this.commands[command]()
   }
 
-  getChoosedCommand(options: string[]): Promise<ECommands> {
-    const variantOption = options[0] ? options[0].toLowerCase() : ''
+  getChoosedCommand(): Promise<ECommands> {
+    const { _: params } = minimist(process.argv.slice(3))
+
     let variants: ECommands | null = null
+    const variantOption = params[0]
 
     if (variantOption) {
       for (let i = 0; i <= Object.keys(this.variants).length; i++) {

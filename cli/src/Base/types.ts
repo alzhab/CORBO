@@ -9,7 +9,7 @@ export interface IBase {
   insertoIntoProjectFile(data: IInsertoIntoProjectFileParams[]): void
   createFolderInProject(path: string): void
   createFilesInProject(data: ICreateFileInProject[]): void
-  lintProjectFiles(): Promise<void>
+  lintProjectFiles(filePaths: string[]): Promise<void>
   isFolderEmptyInProject(path: string): boolean
   getSVGContent(path: string): ISvgContent
   spinner(): () => void
@@ -19,6 +19,7 @@ export interface IBase {
     call: (item?: D) => Promise<any>,
   ): Promise<void>
   promiseOneByOne(pomises: (() => Promise<any>)[]): Promise<void>
+  isExistInProjectFile(data: ICheckIsExistInProjectFileParams): boolean
 }
 
 export interface ICopyToProject {
@@ -37,6 +38,8 @@ export interface IInsertoIntoProjectFileParams {
   content: string
   type: 'after' | 'before' | 'end' | 'start' | 'replace'
   searchRegex?: RegExp
+  checkExist?: boolean
+  scopeStart?: RegExp
 }
 
 export interface ISvgContent {
@@ -44,4 +47,9 @@ export interface ISvgContent {
   svg: string
   baseWidth: string
   baseHeight: string
+}
+
+export interface ICheckIsExistInProjectFileParams {
+  path: string
+  content: string
 }

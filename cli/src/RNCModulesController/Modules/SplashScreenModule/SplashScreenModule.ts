@@ -98,32 +98,32 @@ export class SplashScreenModule implements ISplashScreenModule {
 
   generateFiles() {
     const configSplashScreenFolderExist = this.base.isInProjectExist(
-      '/src/Configs/SplashScreen',
+      '/src/configs/SplashScreen',
     )
     const splashScreenFileExist = this.base.isInProjectExist(
-      '/src/Configs/SplashScreen/launch_screen.jpg',
+      '/src/configs/SplashScreen/launch_screen.jpg',
     )
 
     if (configSplashScreenFolderExist && !splashScreenFileExist) {
       console.log(
         chalk.red(
-          'ERROR: /src/Configs/SplashScreen/launch_screen.jpg not found',
+          'ERROR: /src/configs/SplashScreen/launch_screen.jpg not found',
         ),
       )
       shell.exit()
     } else if (!configSplashScreenFolderExist) {
-      if (!this.base.isInProjectExist('/src/Configs')) {
-        this.base.createFolderInProject('/src/Configs')
-        this.base.createFolderInProject('/src/Configs/SplashScreen')
+      if (!this.base.isInProjectExist('/src/configs')) {
+        this.base.createFolderInProject('/src/configs')
+        this.base.createFolderInProject('/src/configs/SplashScreen')
       } else {
-        this.base.createFolderInProject('/src/Configs/SplashScreen')
+        this.base.createFolderInProject('/src/configs/SplashScreen')
       }
 
       this.base.copyToProject([
         {
           pathFrom:
             SPLASH_SCREEEN_TEMPLATE_PATH + '/SplashScreen/launch_screen.jpg',
-          pathTo: '/src/Configs/SplashScreen',
+          pathTo: '/src/configs/SplashScreen',
         },
       ])
     }

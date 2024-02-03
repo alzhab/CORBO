@@ -9,6 +9,7 @@ import {
 } from './constants'
 import chalk from 'chalk'
 import shell from 'shelljs'
+import minimist from 'minimist'
 
 export const ServiceCommandsId = Symbol('ServiceCommandsId')
 
@@ -18,7 +19,9 @@ export class ServiceCommands implements IServiceCommands {
     @inject(ValidatorsId) private validators: IValidators,
     @inject(BaseId) private base: IBase,
   ) {}
-  async init(params: string[]): Promise<void> {
+  async init(): Promise<void> {
+    const { _: params } = minimist(process.argv.slice(3))
+
     if (params[0]) {
       const names = params[0].split(',')
       return Promise.all(names.map(this.createService.bind(this))).then()

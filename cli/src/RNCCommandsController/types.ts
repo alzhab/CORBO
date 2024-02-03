@@ -1,5 +1,5 @@
 export interface IRNCCommandsController {
-  init(params: string[]): Promise<void>
+  init(): Promise<void>
 }
 
 export enum ECommands {

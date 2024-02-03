@@ -4,7 +4,7 @@ import { IInsertoIntoProjectFileParams } from '../../../Base'
 export const SPLASH_SCREEEN_TEMPLATE_PATH =
   './templates/Modules/SplashScreenModule'
 export const SPLASH_SCREEN_IMAGE_PATH =
-  PROJECT_PATH + '/src/Configs/SplashScreen/launch_screen.jpg'
+  PROJECT_PATH + '/src/configs/SplashScreen/launch_screen.jpg'
 
 export const SPLASH_SCREEN_ANDROID_CONFIGURATION: IInsertoIntoProjectFileParams[] =
   [

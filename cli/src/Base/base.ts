@@ -1,6 +1,7 @@
 import { injectable } from 'inversify'
 import {
   IBase,
+  ICheckIsExistInProjectFileParams,
   ICopyToProject,
   ICreateFileInProject,
   IInsertoIntoProjectFileParams,
@@ -95,79 +96,91 @@ export class Base implements IBase {
   }
 
   insertoIntoProjectFile(data: IInsertoIntoProjectFileParams[]) {
-    data.forEach(item => {
-      if (/\|getAppName\(\)\|/.test(item.path)) {
-        item.path = item.path.replaceAll('|getAppName()|', this.getAppName())
-      }
-      const searchRegexString = item.searchRegex
-        ? `${item.searchRegex.toString().slice(1, -1).replaceAll('\\', '')}`
-        : ''
+    data
+      .filter(item => {
+        if (item.checkExist) {
+          return !this.isExistInProjectFile({
+            path: item.path,
+            content: item.content,
+          })
+        } else {
+          return true
+        }
+      })
+      .forEach(item => {
+        if (/\|getAppName\(\)\|/.test(item.path)) {
+          item.path = item.path.replaceAll('|getAppName()|', this.getAppName())
+        }
+        const searchRegexString = item.searchRegex
+          ? `${item.searchRegex.toString().slice(1, -1).replaceAll('\\', '')}`
+          : ''
 
-      switch (item.type) {
-        case 'end': {
-          const content = shell.cat(PROJECT_PATH + item.path)
-          shell
-            .ShellString(content + '\n' + item.content)
-            .to(PROJECT_PATH + item.path)
-          break
+        switch (item.type) {
+          case 'end': {
+            const content = shell.cat(PROJECT_PATH + item.path)
+            shell
+              .ShellString(content + '\n' + item.content)
+              .to(PROJECT_PATH + item.path)
+            break
+          }
+          case 'start': {
+            const content = shell.cat(PROJECT_PATH + item.path)
+            shell
+              .ShellString(item.content + '\n' + content)
+              .to(PROJECT_PATH + item.path)
+            break
+          }
+          case 'after':
+            if (item.searchRegex) {
+              shell.sed(
+                '-i',
+                item.searchRegex,
+                `${searchRegexString} \n ${item.content}`,
+                PROJECT_PATH + item.path,
+              )
+            } else {
+              console.log(
+                chalk.red(
+                  'ERROR: insertoIntoProjectFile must contain insertRegex',
+                ),
+              )
+            }
+            break
+          case 'before':
+            if (item.searchRegex) {
+              shell.sed(
+                '-i',
+                item.searchRegex,
+                `${item.content} \n ${searchRegexString}`,
+                PROJECT_PATH + item.path,
+              )
+            } else {
+              console.log(
+                chalk.red(
+                  'ERROR: insertoIntoProjectFile must contain insertRegex',
+                ),
+              )
+            }
+            break
+          case 'replace':
+            if (item.searchRegex) {
+              shell.sed(
+                '-i',
+                item.searchRegex,
+                item.content + '\n',
+                PROJECT_PATH + item.path,
+              )
+            } else {
+              console.log(
+                chalk.red(
+                  'ERROR: insertoIntoProjectFile must contain insertRegex',
+                ),
+              )
+            }
+            break
         }
-        case 'start': {
-          const content = shell.cat(PROJECT_PATH + item.path)
-          shell
-            .ShellString(item.content + '\n' + content)
-            .to(PROJECT_PATH + item.path)
-          break
-        }
-        case 'after':
-          if (item.searchRegex) {
-            shell.sed(
-              '-i',
-              item.searchRegex,
-              `${searchRegexString} \n ${item.content}`,
-              PROJECT_PATH + item.path,
-            )
-          } else {
-            console.log(
-              chalk.red(
-                'ERROR: insertoIntoProjectFile must contain insertRegex',
-              ),
-            )
-          }
-          break
-        case 'before':
-          if (item.searchRegex) {
-            shell.sed(
-              '-i',
-              item.searchRegex,
-              `${item.content} \n ${searchRegexString}`,
-              PROJECT_PATH + item.path,
-            )
-          } else {
-            console.log(
-              chalk.red(
-                'ERROR: insertoIntoProjectFile must contain insertRegex',
-              ),
-            )
-          }
-          break
-        case 'replace':
-          if (item.searchRegex) {
-            shell.sed(
-              '-i',
-              item.searchRegex,
-              item.content + '\n',
-              PROJECT_PATH + item.path,
-            )
-          } else {
-            console.log(
-              chalk.red(
-                'ERROR: insertoIntoProjectFile must contain insertRegex',
-              ),
-            )
-          }
-          break
-      }
-    })
+      })
+    this.lintProjectFiles(data.map(item => item.path))
   }
 
   isInProjectExist(path: string): boolean {
@@ -189,8 +202,13 @@ export class Base implements IBase {
     })
   }
 
-  async lintProjectFiles() {
-    await this.execAsync('npm run lint -- --fix', { silent: true })
+  async lintProjectFiles(filePaths: string[]) {
+    await this.execAsync(
+      `eslint --fix ${filePaths.map(item => PROJECT_PATH + item).join(' ')}`,
+      {
+        silent: true,
+      },
+    )
   }
 
   isFolderEmptyInProject(path: string): boolean {
@@ -260,5 +278,16 @@ export class Base implements IBase {
     for (const promise of promises) {
       await promise()
     }
+  }
+
+  isExistInProjectFile(data: ICheckIsExistInProjectFileParams): boolean {
+    const content = fs.readFileSync(PROJECT_PATH + data.path)
+
+    return (
+      content
+        .toString()
+        .replace(/\s/g, '')
+        .indexOf(data.content.replace(/\s/g, '')) >= 0
+    )
   }
 }

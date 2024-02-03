@@ -3,6 +3,7 @@ import { IScreenCommands } from './types'
 import { BaseId, IBase } from '../../../Base'
 import { IValidators, ValidatorsId } from '../../../Validators'
 import { SCREEN_CONFIG, SCREEN_FOLDER_PATH } from './constants'
+import minimist from 'minimist'
 
 export const ScreenCommandsId = Symbol.for('ScreenCommandsId')
 
@@ -13,7 +14,9 @@ export class ScreenCommands implements IScreenCommands {
     @inject(ValidatorsId) private validators: IValidators,
   ) {}
 
-  async init(params: string[]): Promise<void> {
+  async init(): Promise<void> {
+    const { _: params } = minimist(process.argv.slice(3))
+
     if (params[0]) {
       const names = params[0].split(',')
       return Promise.all(names.map(this.createScreen.bind(this))).then()

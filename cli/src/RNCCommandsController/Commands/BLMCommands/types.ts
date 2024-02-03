@@ -1,5 +1,7 @@
+import { TCommandReturn } from '../../../types'
+
 export interface IBlmCommands {
-  init(params: string[]): Promise<void>
+  init(): Promise<TCommandReturn>
 }
 
 export enum EBlmVariants {

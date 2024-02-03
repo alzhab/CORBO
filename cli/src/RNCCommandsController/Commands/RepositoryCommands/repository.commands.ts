@@ -7,6 +7,7 @@ import {
   REPOSITORY_CREATE_FILES,
   REPOSITORY_FOLDER_PATH,
 } from './constant'
+import minimist from 'minimist'
 
 export const RepositoryCommandsId = Symbol.for('RepositoryCommands')
 
@@ -16,7 +17,9 @@ export class RepositoryCommands implements IRepositoryCommands {
     @inject(ValidatorsId) private validators: IValidators,
     @inject(BaseId) private base: IBase,
   ) {}
-  async init(params: string[]): Promise<void> {
+  async init(): Promise<void> {
+    const { _: params } = minimist(process.argv.slice(3))
+
     if (params[0]) {
       const names = params[0].split(',')
       return Promise.all(names.map(name => this.createRepo(name))).then()

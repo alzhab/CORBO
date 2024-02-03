@@ -12,3 +12,5 @@ export interface IIconTemplateProps {
   baseWidth: string
   baseHeight: string
 }
+
+export type TCommandReturn = void

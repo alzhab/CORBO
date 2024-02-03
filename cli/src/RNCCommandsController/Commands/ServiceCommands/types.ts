@@ -1,3 +1,3 @@
 export interface IServiceCommands {
-  init(params: string[]): Promise<void>
+  init(): Promise<void>
 }

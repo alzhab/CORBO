@@ -6,6 +6,8 @@ import inquirer from 'inquirer'
 import { IValidators, ValidatorsId } from '../Validators'
 import { BaseId, IBase } from '../Base'
 import { CONFIG_SWAGGER_PATH } from './API/constants'
+import { TCommandReturn } from '../types'
+import minimist from 'minimist'
 
 export const RNCGeneratorsControllerId = Symbol.for('RNCGeneratorsController')
 
@@ -17,7 +19,7 @@ export class RNCGeneratorsController implements IRNCGeneratorsController {
     @inject(BaseId) private base: IBase,
   ) {}
 
-  generators: { [key in EGenerators]: () => void } = {
+  generators: { [key in EGenerators]: () => Promise<TCommandReturn> } = {
     [EGenerators.Api]: () => this.apiGenerator.init(),
   }
 
@@ -25,10 +27,11 @@ export class RNCGeneratorsController implements IRNCGeneratorsController {
     [EGenerators.Api]: ['api'],
   }
 
-  async init(params: string[]) {
-    const command = await this.getChoosedGenerator(params)
+  async init(): Promise<TCommandReturn> {
+    const { _: names } = minimist(process.argv.slice(2))
+    const command = await this.getChoosedGenerator(names)
 
-    await this.generators[command]()
+    return this.generators[command]()
   }
 
   getChoosedGenerator(options: string[]): Promise<EGenerators> {

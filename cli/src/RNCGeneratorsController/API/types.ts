@@ -1,5 +1,7 @@
+import { TCommandReturn } from '../../types'
+
 export interface IApiGenerator {
-  init(): Promise<void>
+  init(): Promise<TCommandReturn>
 }
 
 export type TGenericDataReturn = {
@@ -18,6 +20,14 @@ export interface Request {
   payload: { name: string; optional: boolean; type: string }
 }
 
+export interface Response {
+  content: any
+  status: number
+  rawTypeData: any
+  typeData: any
+  type: string
+}
+
 export interface ModelType {
   name: string
   typeData: { content: string }
@@ -25,10 +35,25 @@ export interface ModelType {
 }
 
 export interface ICreateRequestData {
-  response: TGenericDataReturn
+  functionName: string
+  path: string
   body: TGenericDataReturn
   query: TGenericDataReturn
   type: string
   requestTemplate: string
   requestTypeTemplate: string
+  requestMockTemplates: IRequestMockTemplateConfig
+  requestResponse: TGenericDataReturn
+}
+
+export interface ICreateMockRequestData {
+  path: string
+  method: string
+  responses: { status: number; data: any }[]
+}
+
+export interface IRequestMockTemplateConfig {
+  path: string
+  routeTemplate: string
+  responsesTemplate: { method: string; content: string }
 }

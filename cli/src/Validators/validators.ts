@@ -36,7 +36,7 @@ export class Validators implements IValidators {
 
   // Check is ThemeModule initialized
   get isThemeModuleInitialized(): boolean {
-    return fs.existsSync(PROJECT_PATH + '/src/Configs/Theme')
+    return fs.existsSync(PROJECT_PATH + '/src/configs/Theme')
   }
 
   getIsDependenciesExist(list: string[]) {

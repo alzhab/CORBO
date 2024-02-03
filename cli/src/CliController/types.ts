@@ -5,6 +5,5 @@ export interface ICliController {
 export enum ECliVariants {
   Modules = 'Modules',
   Commands = 'Commands',
-  UILibs = 'UI libs',
   Generators = 'Generators',
 }

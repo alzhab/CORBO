@@ -9,8 +9,8 @@ export const LOCALIZATION_MODULE_TEMPLATE_PATH =
 
 export const LOCALIZATION_MODULE_CONFIG: ICopyToProject[] = [
   {
-    pathFrom: LOCALIZATION_MODULE_TEMPLATE_PATH + '/Configs/Locales',
-    pathTo: '/src/Configs/',
+    pathFrom: LOCALIZATION_MODULE_TEMPLATE_PATH + '/configs/Locales',
+    pathTo: '/src/configs/',
     type: 'folder',
   },
 ]

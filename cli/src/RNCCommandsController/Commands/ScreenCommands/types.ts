@@ -1,3 +1,3 @@
 export interface IScreenCommands {
-  init(params: string[]): Promise<void>
+  init(): Promise<void>
 }

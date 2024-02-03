@@ -19,6 +19,7 @@ import minimist from 'minimist'
 import inquirer from 'inquirer'
 import { ECommands } from '../../types'
 import chalk from 'chalk'
+import { TCommandReturn } from '../../../types'
 
 export const BlmCommandsId = Symbol('BlmCommandsId')
 
@@ -67,7 +68,7 @@ export class BlmCommands implements IBlmCommands {
   }
 
   // params ['blmName', '-s name?', '-f name?', '-a name', '-u name']
-  async init(): Promise<void> {
+  async init(): Promise<TCommandReturn> {
     const { _: names = [''], ...params } = minimist(process.argv.slice(4))
 
     let blmName =

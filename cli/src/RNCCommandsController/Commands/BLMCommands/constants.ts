@@ -14,7 +14,7 @@ import {
 } from '../../../../templates/Commands/BlmCommands/constants'
 import { ITemplateProps } from '../../../types'
 
-export const BLM_FOLDER_PATH = '/src/blms'
+export const BLM_FOLDER_PATH = '/src/blm'
 export const ROOT_FLOW_PATH = '/src/instruments/base/root-flow'
 
 export const BLM_CREATE_FILES: (

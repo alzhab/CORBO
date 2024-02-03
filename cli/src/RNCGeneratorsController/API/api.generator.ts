@@ -1,27 +1,32 @@
 import {
   IApiGenerator,
   ICreateRequestData,
+  IRequestMockTemplateConfig,
   ModelType,
   Request,
+  Response,
   TGenericDataReturn,
 } from './types'
 import { inject, injectable } from 'inversify'
-import { BaseId, IBase } from '../../Base'
+import { BaseId, IBase, IInsertoIntoProjectFileParams } from '../../Base'
 import {
   API_FILE_PATH,
   API_GENERATOR_TEMPLATE_PATH,
   API_MODELS_FILE_PATH,
-  API_PATH,
   API_TYPES_FILE_PATH,
   CONFIG_SWAGGER_PATH,
+  MOCK_CONFIG_FILE_PATH,
 } from './constants'
 import { generateApi, ParsedRoute } from 'swagger-typescript-api'
 import { PROJECT_PATH } from '../../constants'
 import {
+  MOCK_CONFIG_RESPONSE_TEMPLATE,
+  MOCK_CONFIG_ROUTE_TEMPLATE,
   MODEL_TEMPLATE,
   REQUEST_TEMPLATE,
   REQUEST_TYPE_TEMPLATE,
 } from '../../../templates/Generators/API/constants'
+import { TCommandReturn } from '../../types'
 
 export const ApiGeneratorId = Symbol.for('ApiGenerator')
 
@@ -29,10 +34,10 @@ export const ApiGeneratorId = Symbol.for('ApiGenerator')
 export class ApiGenerator implements IApiGenerator {
   constructor(@inject(BaseId) private base: IBase) {}
 
-  async init(): Promise<void> {
-    await generateApi({
+  async init(): Promise<TCommandReturn> {
+    return generateApi({
       name: 'api.ts',
-      output: PROJECT_PATH + '/src/repositories/Api',
+      output: PROJECT_PATH + '/src/instruments/repositories/Api',
       input: CONFIG_SWAGGER_PATH,
       templates: API_GENERATOR_TEMPLATE_PATH,
       httpClientType: 'axios',
@@ -62,38 +67,53 @@ export class ApiGenerator implements IApiGenerator {
           'BadResponse',
         ],
       },
+    }).then(({ configuration }) => {
+      const {
+        routesData,
+        requestsTemplate,
+        requestsTypeTemplate,
+        requestsMockTemplates,
+      } = this.parseRoutesData(configuration.routes.combined)
+
+      const { modelTypesTemplate, importTemplate } = this.getModelsTemplate(
+        routesData,
+        configuration.modelTypes as any,
+      )
+
+      this.generateFiles({
+        requestsTemplate,
+        requestsTypeTemplate,
+        requestsMockTemplates,
+        modelTypesTemplate,
+        importTemplate,
+      })
     })
-      .then(({ configuration }) => {
-        const { routesData, requestsTemplate, requestsTypeTemplate } =
-          this.parseRoutesData(configuration.routes.combined)
-
-        const { modelTypesTemplate, importTemplate } = this.getModelsTemplate(
-          routesData,
-          configuration.modelTypes as any,
-        )
-
-        this.generateFiles({
-          requestsTemplate,
-          requestsTypeTemplate,
-          modelTypesTemplate,
-          importTemplate,
-        })
-      })
-      .catch(e => {
-        console.log({ e })
-      })
   }
 
   generateFiles(data: {
     requestsTemplate: string
     requestsTypeTemplate: string
+    requestsMockTemplates: IRequestMockTemplateConfig[]
     modelTypesTemplate: string
     importTemplate: string
-  }) {
-    if (!this.base.isInProjectExist(API_PATH)) {
-      // TODO Create Api structure from network module
-      this.base.createFolderInProject(API_PATH)
-    }
+  }): TCommandReturn {
+    // TODO Create Api structure from network module
+    const modelsImport: (
+      path: string,
+    ) => Omit<IInsertoIntoProjectFileParams, 'path'> = path =>
+      this.base.isExistInProjectFile({
+        path,
+        content: './models',
+      })
+        ? {
+            type: 'before',
+            searchRegex: new RegExp(/} from '\.\/models'/),
+            content: `${data.importTemplate}`,
+          }
+        : {
+            type: 'start',
+            content: `import {${data.importTemplate}} from './models'`,
+          }
 
     if (this.base.isInProjectExist(API_MODELS_FILE_PATH)) {
       this.base.insertoIntoProjectFile([
@@ -116,32 +136,47 @@ export class ApiGenerator implements IApiGenerator {
       {
         path: API_TYPES_FILE_PATH,
         type: 'before',
-        content: `, ContentType, TRequestData`,
         searchRegex: new RegExp(/} from 'base\/BaseRest'/),
+        content: `, ContentType`,
+        checkExist: true,
       },
       {
         path: API_TYPES_FILE_PATH,
-        type: 'start',
-        content: `import {${data.importTemplate}} from './models'
-import {ContentType, TRequest, TRequestData} from 'base/BaseRest'
-`,
+        ...modelsImport(API_TYPES_FILE_PATH),
       },
       {
         path: API_TYPES_FILE_PATH,
         type: 'after',
         searchRegex: new RegExp(/export interface IApiRepo \{/),
         content: data.requestsTypeTemplate,
+        checkExist: true,
       },
     ])
 
     this.base.insertoIntoProjectFile([
       {
         path: API_FILE_PATH,
+        ...modelsImport(API_FILE_PATH),
+      },
+      {
+        path: API_FILE_PATH,
+        type: 'after',
+        searchRegex: new RegExp(/import \{ BaseRest/),
+        content: `, ContentType`,
+        checkExist: true,
+      },
+      {
+        path: API_FILE_PATH,
+        type: 'after',
+        searchRegex: new RegExp(/import \{ BaseRest/),
+        content: `, TRequestData`,
+        checkExist: true,
+      },
+      {
+        path: API_FILE_PATH,
         type: 'start',
-        content: `import {${data.importTemplate} from './models'
-import {ContentType, TRequestData} from 'base/BaseRest';
-import {AxiosResponse} from 'axios';
-`,
+        content: `import { AxiosResponse } from 'axios'`,
+        checkExist: true,
       },
       {
         path: API_FILE_PATH,
@@ -152,6 +187,30 @@ import {AxiosResponse} from 'axios';
         content: data.requestsTemplate,
       },
     ])
+
+    const mockInsertConfig: IInsertoIntoProjectFileParams[] =
+      data.requestsMockTemplates.map(item => {
+        return item.routeTemplate
+          ? {
+              path: MOCK_CONFIG_FILE_PATH,
+              type: 'after',
+              searchRegex: new RegExp(/TMockConfig = \{/),
+              content: item.routeTemplate,
+            }
+          : {
+              path: MOCK_CONFIG_FILE_PATH,
+              type: 'after',
+              searchRegex: new RegExp(
+                item.path +
+                  '.*?' +
+                  item.responsesTemplate +
+                  '.*?responses\\s*:\\s*{',
+              ),
+              content: item.responsesTemplate.content,
+            }
+      })
+
+    this.base.insertoIntoProjectFile(mockInsertConfig)
   }
 
   getModelsTemplate(
@@ -161,14 +220,46 @@ import {AxiosResponse} from 'axios';
     const routesModelTypes = this.getRoutesModelTypes(routesData)
 
     configModelTypes = configModelTypes.filter((value, index, self) => {
-      return self.findIndex(v => v.name === value.name) === index
+      const notAlredyExistInFile = !this.base.isExistInProjectFile({
+        path: API_MODELS_FILE_PATH,
+        content: value.name,
+      })
+
+      const isNotDuplicate =
+        self.findIndex(v => v.name === value.name) === index
+
+      return notAlredyExistInFile && isNotDuplicate
     })
 
     const modelTypes = [...configModelTypes, ...routesModelTypes]
 
-    const importTemplate = modelTypes.map(item => item.name).join(', ')
+    const importTemplate = modelTypes
+      .filter((value, index, self) => {
+        const notAlreadyExistInFile = !this.base.isExistInProjectFile({
+          path: API_FILE_PATH,
+          content: value.name,
+        })
+        const isNotDuplicate =
+          self.findIndex(v => v.name === value.name) === index
 
-    const modelTypesTemplate = modelTypes.map(this.getCreateModelData).join('')
+        return notAlreadyExistInFile && isNotDuplicate
+      })
+      .map(item => item.name)
+      .join(', ')
+
+    const modelTypesTemplate = modelTypes
+      .filter((value, index, self) => {
+        const notAlreadyExistInFile = !this.base.isExistInProjectFile({
+          path: API_MODELS_FILE_PATH,
+          content: value.name,
+        })
+        const isNotDuplicate =
+          self.findIndex(v => v.name === value.name) === index
+
+        return notAlreadyExistInFile && isNotDuplicate
+      })
+      .map(this.getCreateModelData)
+      .join('')
 
     return {
       importTemplate,
@@ -184,8 +275,9 @@ import {AxiosResponse} from 'axios';
   ) {
     const routesData: ICreateRequestData[] = (data || []).reduce(
       (prev: any, current) => {
-        const routesData = current.routes.map(({ request }) =>
-          this.getCreateRequestData(request as any),
+        const routesData = current.routes.map(
+          ({ request, responseBodyInfo: { responses } }: any) =>
+            this.getCreateRequestData(request as any, (responses || []) as any),
         )
 
         prev.push(...routesData)
@@ -195,18 +287,37 @@ import {AxiosResponse} from 'axios';
       [] as ICreateRequestData[],
     )
 
-    const requestsTemplate = routesData
+    const requestTemplateRoutesData = routesData.filter(item => {
+      const isExist = this.base.isExistInProjectFile({
+        path: API_FILE_PATH,
+        content: item.functionName,
+      })
+
+      return !isExist
+    })
+
+    const mockRequestTemplateRoutesData = routesData
+
+    const requestsTemplate = requestTemplateRoutesData
       .map(item => item.requestTemplate)
       .join('\n')
-    const requestsTypeTemplate = routesData
+    const requestsTypeTemplate = requestTemplateRoutesData
       .map(item => item.requestTypeTemplate)
       .join('\n')
+    const requestsMockTemplates = mockRequestTemplateRoutesData.map(
+      item => item.requestMockTemplates,
+    )
 
-    return { routesData, requestsTemplate, requestsTypeTemplate }
+    return {
+      routesData,
+      requestsTemplate,
+      requestsTypeTemplate,
+      requestsMockTemplates,
+    }
   }
 
   getRoutesModelTypes(data: ICreateRequestData[]) {
-    return data.reduce((prev, { body, query, response }) => {
+    return data.reduce((prev, { body, query, requestResponse }) => {
       const bodyModelType: ModelType | null = body.isCreateType
         ? {
             name: body.interfaceName,
@@ -237,20 +348,11 @@ import {AxiosResponse} from 'axios';
         prev.push(queryModelType)
       }
 
-      const responseModelType: ModelType | null = response.isCreateType
-        ? {
-            name: response.interfaceName,
-            typeData: { content: response.interfaceContent },
-            typeIdentifier: response.typeIdentifier,
-          }
-        : null
-
-      if (
-        responseModelType &&
-        !prev.find(item => item.name === response.interfaceName)
-      ) {
-        prev.push(responseModelType)
-      }
+      prev.push({
+        name: requestResponse.interfaceName,
+        typeData: { content: requestResponse.interfaceContent },
+        typeIdentifier: requestResponse.typeIdentifier,
+      })
 
       return prev
     }, [] as ModelType[])
@@ -264,7 +366,10 @@ import {AxiosResponse} from 'axios';
     })
   }
 
-  getCreateRequestData(request: Request): ICreateRequestData {
+  getCreateRequestData(
+    request: Request,
+    responses: Response[],
+  ): ICreateRequestData {
     const functionName = this.getRequestName(request)
 
     const requestPath = this.getRequestPath(request)
@@ -274,30 +379,55 @@ import {AxiosResponse} from 'axios';
       body,
       query,
       type,
-      response,
-    } = this.getRequestDataGenerics(request, functionName)
+      requestResponse,
+    } = this.getRequestDataGenerics(request, responses, functionName)
 
     const requestTemplate = REQUEST_TEMPLATE({
       functionName,
       path: requestPath,
       method: request.method,
-      response: response.interfaceName,
+      response: requestResponse.interfaceName,
       requestDataGeneric: requestDataGenerics,
     })
 
     const requestTypeTemplate = REQUEST_TYPE_TEMPLATE({
       functionName,
-      response: response.interfaceName,
+      response: requestResponse.interfaceName,
       requestDataGeneric: requestDataGenerics,
     })
 
+    const isMockRouteExist = this.base.isExistInProjectFile({
+      path: MOCK_CONFIG_FILE_PATH,
+      content: request.path,
+    })
+
+    const requestMockTemplates = {
+      path: request.path,
+      routeTemplate: isMockRouteExist
+        ? ''
+        : MOCK_CONFIG_ROUTE_TEMPLATE({
+            path: request.path,
+            response: { data: '', status: 200 },
+            method: request.method,
+          }),
+      responsesTemplate: {
+        method: request.method,
+        content: MOCK_CONFIG_RESPONSE_TEMPLATE({
+          response: { data: '', status: 200 },
+        }),
+      },
+    }
+
     return {
+      functionName,
+      path: requestPath,
       body,
       query,
       type,
       requestTemplate,
       requestTypeTemplate,
-      response,
+      requestResponse,
+      requestMockTemplates,
     }
   }
 
@@ -305,11 +435,14 @@ import {AxiosResponse} from 'axios';
     return input.charAt(0).toUpperCase() + input.slice(1)
   }
 
-  getRequestRepsonse(functionName: string): TGenericDataReturn {
+  getRequestRepsonses(
+    responses: Response[],
+    functionName: string,
+  ): TGenericDataReturn {
     return {
-      interfaceName: `I${this.toUppercase(functionName)}Response`,
-      isCreateType: true,
+      interfaceName: `I${this.toUppercase(functionName)}Response${200}`,
       interfaceContent: 'void',
+      isCreateType: true,
       typeIdentifier: 'type',
     }
   }
@@ -371,11 +504,15 @@ import {AxiosResponse} from 'axios';
     }
   }
 
-  getRequestDataGenerics(request: Request, functionName: string) {
+  getRequestDataGenerics(
+    request: Request,
+    responses: Response[],
+    functionName: string,
+  ) {
     const body = this.getRequestBody(request, functionName)
     const query = this.getRequestParams(request, functionName)
     const type = request.formData ? 'ContentType.FormData' : ''
-    const response = this.getRequestRepsonse(functionName)
+    const requestResponse = this.getRequestRepsonses(responses, functionName)
 
     const data = [
       body.interfaceName || (query.interfaceName || type ? '{}' : ''),
@@ -390,7 +527,7 @@ import {AxiosResponse} from 'axios';
       body,
       query,
       type,
-      response,
+      requestResponse,
     }
   }
 

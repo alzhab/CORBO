@@ -1,5 +1,7 @@
+import { TCommandReturn } from '../types'
+
 export interface IRNCGeneratorsController {
-  init(params: string[]): Promise<void>
+  init(): Promise<TCommandReturn>
 }
 
 export enum EGenerators {

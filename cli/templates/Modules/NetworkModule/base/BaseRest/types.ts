@@ -1,5 +1,5 @@
 import { AxiosRequestConfig, AxiosResponse, ResponseType } from 'axios'
-Å
+
 export interface IBaseRest {
   request<T>(params: RequestParams): Promise<AxiosResponse<T>>
 }

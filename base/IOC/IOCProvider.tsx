@@ -1,17 +1,22 @@
-import React, { FC, PropsWithChildren } from 'react'
-import { Provider as InversifyProvider } from 'inversify-react'
-import { Container } from 'inversify'
-import { TBindContainer } from './types'
+import React, {FC, PropsWithChildren} from 'react';
+import {Provider as InversifyProvider} from 'inversify-react';
+import {Container} from 'inversify';
+import {IAppEventsStore, IEventEmiter, TBindContainer} from './types';
+import {AppEventsStore, AppEventsStoreId} from './store';
+import {EventEmiter, EventEmiterId} from './eventEmitter';
+
+const container = new Container({ defaultScope: 'Singleton' })
 
 export function bindContainers(binders: TBindContainer[]): Container {
-  binders = [...binders]
-  const container = new Container({ defaultScope: 'Singleton' })
+  container.bind<IAppEventsStore>(AppEventsStoreId).to(AppEventsStore)
+  container.bind<IEventEmiter>(EventEmiterId).to(EventEmiter)
 
   binders.forEach(item => item(container))
-  // Init services data
 
   return container
 }
+
+export const eventEmiter = container.get<IEventEmiter>(EventEmiterId)
 
 export const IOCProvider: FC<
   PropsWithChildren<{

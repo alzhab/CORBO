@@ -21,28 +21,28 @@ export class AppIconModule implements IAppIconModule {
   }
 
   generateFiles() {
-    const configFolderExist = this.base.isInProjectExist('/src/Configs/AppIcon')
+    const configFolderExist = this.base.isInProjectExist('/src/configs/AppIcon')
     const launchIconExist = this.base.isInProjectExist(
-      '/src/Configs/AppIcon/ic_launcher.png',
+      '/src/configs/AppIcon/ic_launcher.png',
     )
 
     if (configFolderExist && !launchIconExist) {
       console.log(
-        chalk.red('ERROR: /src/Configs/AppIcon/ic_launcher.png not found'),
+        chalk.red('ERROR: /src/configs/AppIcon/ic_launcher.png not found'),
       )
       shell.exit()
     } else if (!configFolderExist) {
-      if (!this.base.isInProjectExist('/src/Configs')) {
-        this.base.createFolderInProject('/src/Configs')
-        this.base.createFolderInProject('/src/Configs/AppIcon')
+      if (!this.base.isInProjectExist('/src/configs')) {
+        this.base.createFolderInProject('/src/configs')
+        this.base.createFolderInProject('/src/configs/AppIcon')
       } else {
-        this.base.createFolderInProject('/src/Configs/AppIcon')
+        this.base.createFolderInProject('/src/configs/AppIcon')
       }
 
       this.base.copyToProject([
         {
           pathFrom: APP_ICON_TEMPLATE_PATH + '/AppIcon/ic_launcher.png',
-          pathTo: '/src/Configs/AppIcon',
+          pathTo: '/src/configs/AppIcon',
         },
       ])
     }

@@ -15,11 +15,11 @@ import {
   IRNCCommandsController,
   RNCCommandsControllerId,
 } from '../RNCCommandsController'
-import { IRNCUILibs, RNCUILibsId } from '../RNCUILibs'
 import {
   IRNCGeneratorsController,
   RNCGeneratorsControllerId,
 } from '../RNCGeneratorsController'
+import { TCommandReturn } from '../types'
 
 export const CliControllerId = Symbol('CliControllerId')
 
@@ -35,40 +35,32 @@ export class CliController implements ICliController {
     private RNCModulesController: IRNCModulesController,
     @inject(RNCCommandsControllerId)
     private RNCCommandsController: IRNCCommandsController,
-    @inject(RNCUILibsId)
-    private RNCUILibs: IRNCUILibs,
   ) {}
 
-  calls: { [key in ECliVariants]: (params: string[]) => void } = {
-    [ECliVariants.Commands]: params => this.RNCCommandsController.init(params),
+  calls: {
+    [key in ECliVariants]: () => Promise<TCommandReturn>
+  } = {
+    [ECliVariants.Commands]: () => this.RNCCommandsController.init(),
     [ECliVariants.Modules]: () => this.RNCModulesController.init(),
-    [ECliVariants.Generators]: params =>
-      this.RNCGeneratorsController.init(params),
-    [ECliVariants.UILibs]: () => this.RNCUILibs.init(),
+    [ECliVariants.Generators]: () => this.RNCGeneratorsController.init(),
   }
 
   variants = {
     [ECliVariants.Modules]: ['modules', 'module', 'modul', 'mod', 'm'],
     [ECliVariants.Commands]: ['commands', 'command', 'com', 'c'],
-    [ECliVariants.UILibs]: ['uilibs', 'ui', 'uilib'],
     [ECliVariants.Generators]: ['generators', 'generator', 'g', 'gen'],
   }
 
   rnc(options: string[]) {
     return this.initializationCheck(() => {
-      return this.getChoosedVariant(options)
-        .then(variant => {
-          return this.calls[variant](options.slice(1))
-        })
-        .then(() => {
-          // this.base.lintProjectFiles()
-        })
+      return this.getChoosedVariant(options).then(variant => {
+        return this.calls[variant]()
+      })
     })
   }
 
   async initializationCheck(call: () => void) {
     if (this.validators.isRNProject) {
-      // Check Is RNCBase Project initialized
       if (!this.validators.isProjectInitialized) {
         const { confirmToIninit } = await inquirer.prompt([
           {
