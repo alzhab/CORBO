@@ -167,9 +167,15 @@ export class Base implements IBase {
               shell.sed(
                 '-i',
                 item.searchRegex,
-                item.content + '\n',
+                item.content,
                 PROJECT_PATH + item.path,
               )
+              const data = fs.readFileSync(PROJECT_PATH + item.path)
+              const result = data
+                .toString()
+                .replace(item.searchRegex, item.content)
+
+              fs.writeFileSync(PROJECT_PATH + item.path, result, 'utf8')
             } else {
               console.log(
                 chalk.red(
@@ -289,5 +295,19 @@ export class Base implements IBase {
         .replace(/\s/g, '')
         .indexOf(data.content.replace(/\s/g, '')) >= 0
     )
+  }
+
+  getNestedFolders(path: string, num = 0) {
+    const arr: { path: string; folderName: string }[] = []
+    // get folders list recursively
+    const foldersList = this.getFoldersList(path)
+
+    foldersList.forEach(item => {
+      arr.push({ folderName: '-'.repeat(num) + item, path: path + '/' + item })
+      const nested = this.getNestedFolders(path + '/' + item, num + 1)
+      arr.push(...nested)
+    })
+
+    return arr
   }
 }

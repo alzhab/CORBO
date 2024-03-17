@@ -1,6 +1,7 @@
-import { StyleProp, ViewStyle } from 'react-native'
+import {StyleProp, ViewStyle} from 'react-native';
+import {Spacings} from '@corrbo/module-spacing-props';
 
-export interface IIconProps {
+export type IIconProps = Spacings & {
   color?: string
   size?: number
   sizeType?: 'width' | 'height'

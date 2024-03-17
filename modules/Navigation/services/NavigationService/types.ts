@@ -29,4 +29,6 @@ export interface INavigationService {
 
   canGoBack(): boolean
   currentScreen: undefined | keyof TRoutes
+  
+  pop(): void
 }

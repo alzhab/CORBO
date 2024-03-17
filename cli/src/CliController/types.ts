@@ -1,5 +1,5 @@
 export interface ICliController {
-  rnc(options: string[]): void
+  rnc(): void
 }
 
 export enum ECliVariants {

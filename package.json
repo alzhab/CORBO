@@ -1,5 +1,9 @@
 {
   "dependencies": {
-    "doctest-ts-improved": "^0.8.8"
+    "doctest-ts-improved": "^0.8.8",
+    "yaml": "^2.4.1"
+  },
+  "devDependencies": {
+    "copyfiles": "^2.4.1"
   }
 }

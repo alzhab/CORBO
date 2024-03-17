@@ -6,7 +6,7 @@ import {
   REPOSITORY_FILE_TEMPLATE,
   REPOSITORY_INDEX_TEMPLATE,
   REPOSITORY_TYPE_TEMPLATE,
-} from '../../../../templates/Commands/RepositoriesCommands/constants'
+} from './templates'
 import { ITemplateProps } from '../../../types'
 import { IReposCreateFileTemplateProps } from './types'
 

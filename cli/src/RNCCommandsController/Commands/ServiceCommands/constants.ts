@@ -6,7 +6,7 @@ import {
   SERVICE_FILE_TEMPLATE,
   SERVICE_INDEX_TEMPLATE,
   SERVICE_TYPE_TEMPLATE,
-} from '../../../../templates/Commands/ServiceCommands/constants'
+} from './templates'
 import { ITemplateProps } from '../../../types'
 
 export const SERVICE_FOLDER_PATH = '/src/instruments/services'

@@ -1,6 +1,6 @@
 {
   "name": "@corrbo/cli",
-  "version": "1.0.4",
+  "version": "1.0.7",
   "description": "",
   "main": "dist/bundle.js",
   "bin": {
@@ -12,8 +12,8 @@
   "scripts": {
     "clean": "rm dist/bundle.js",
     "build": "webpack --mode=production && npm pack && npm publish --access=public",
-    "ex-pack": "webpack --mode=production && npm pack",
-    "ex": "webpack --mode=production && copyfiles -u 1 \"dist/**/*\" ../../Neutron/smarthome/code/frontend/node_modules/@corrbo/cli/dist",
+    "ex-pack": "webpack --mode=development && npm pack",
+    "ex": "webpack --mode=development && copyfiles -u 1 \"dist/**/*\" ../../ExampleProject/node_modules/@corrbo/cli/dist",
     "start": "node dist/bundle.js",
     "lint": "eslint ."
   },
@@ -50,6 +50,7 @@
     "babel-loader": "^9.1.2",
     "clean-webpack-plugin": "^4.0.0",
     "copy-webpack-plugin": "^11.0.0",
+    "copyfiles": "^2.4.1",
     "eslint": "^8.43.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",

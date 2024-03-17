@@ -5,5 +5,9 @@ export interface IRNCGeneratorsController {
 }
 
 export enum EGenerators {
+  Icons = 'Icons',
+  NavigationSync = 'Navigation sync',
   Api = 'Api',
+  AppIcon = 'App Icon',
+  AppName = 'App name',
 }

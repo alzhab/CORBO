@@ -1,5 +1,5 @@
-import { IBaseFlow } from 'base/root-flow'
-import { IStatusButton } from 'blm/NetworkStateBlm/store/types'
+import {IBaseFlow} from 'Base/root-flow';
+import {IStatusButton} from 'blm/NetworkStateBlm/store/types';
 
 export type INetworkStateFlow = IBaseFlow & {}
 

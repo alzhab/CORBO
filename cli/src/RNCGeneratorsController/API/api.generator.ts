@@ -25,7 +25,7 @@ import {
   MODEL_TEMPLATE,
   REQUEST_TEMPLATE,
   REQUEST_TYPE_TEMPLATE,
-} from '../../../templates/Generators/API/constants'
+} from './templates'
 import { TCommandReturn } from '../../types'
 
 export const ApiGeneratorId = Symbol.for('ApiGenerator')

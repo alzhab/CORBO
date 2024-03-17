@@ -8,7 +8,6 @@ import fs from 'fs'
 import { PROJECT_PATH } from '../constants'
 import { injectable } from 'inversify'
 import inquirer from 'inquirer'
-import { BOOT_MODULE_DEPENDENCIES } from '../RNCModulesController/Modules/BootModule/constants'
 import { SPACING_PROPS_DEPENDENCIES } from '../RNCModulesController/Modules/SpacingPropsModule/constants'
 import { LOCALIZATION_MODULE_DEPENDENCIES } from '../RNCModulesController/Modules/LocalizationModule/constants'
 import { NETWORK_MODULE_DEPENDENCIES_AXIOS } from '../RNCModulesController/Modules/NetworkModule/constants'
@@ -21,6 +20,7 @@ export class Validators implements IValidators {
   packageJsonFile: any = JSON.parse(
     fs.readFileSync(PROJECT_PATH + '/package.json').toString(),
   )
+
   // Check is RN Project
   get isRNProject() {
     // Get package json file
@@ -174,7 +174,7 @@ export class Validators implements IValidators {
     return {
       folderName,
       fileName,
-      folderPath: folderPath + '/' + folderName,
+      folderPath,
     }
   }
 
@@ -255,7 +255,7 @@ export class Validators implements IValidators {
 
   get isNetworkModuleInitialized(): boolean {
     return (
-      fs.existsSync(PROJECT_PATH + '/src/instruments/base/BaseRest') &&
+      fs.existsSync(PROJECT_PATH + '/src/instruments/Base/BaseRest') &&
       this.getIsDependenciesExist(NETWORK_MODULE_DEPENDENCIES_AXIOS)
     )
   }
@@ -266,10 +266,6 @@ export class Validators implements IValidators {
 
   get isSpacingPropsModuleInitialized(): boolean {
     return this.getIsDependenciesExist(SPACING_PROPS_DEPENDENCIES)
-  }
-
-  get isBootModuleInitialized(): boolean {
-    return this.getIsDependenciesExist(BOOT_MODULE_DEPENDENCIES)
   }
 
   get isLocalizationModuleInitialized(): boolean {

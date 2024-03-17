@@ -1,6 +1,6 @@
 {
-  "name": "@corrbo/module-icons",
-  "version": "1.0.0",
+  "name": "@corrbo/module-icon",
+  "version": "1.0.2",
   "description": "",
   "main": "index.ts",
   "scripts": {

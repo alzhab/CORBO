@@ -1,5 +1,8 @@
-import React, { useCallback } from 'react'
-import { RootNavigation } from 'navigations/RootNavigation'
+import React, { FC, useCallback } from 'react'
+import {
+  RootNavigation,
+  RootNavigationParamsMap,
+} from 'navigations/RootNavigation'
 import {
   NavigationContainer,
   useNavigationContainerRef,
@@ -7,18 +10,18 @@ import {
 import { useInjection } from 'inversify-react'
 import { TRoutes } from 'navigations/types'
 import { observer } from 'mobx-react'
+import { useNavigationReadyAdapter } from '@corrbo/module-navigation/blm/ui-adapters/navigation-ready.adapter'
 import {
   INavigationService,
   NavigationServiceId,
-  useInitialScreenAdapter,
-  useNavigationReadyAdapter,
-} from '@corrbo/base/Navigation'
+} from '@corrbo/module-navigation/services'
 
-export const Navigation = observer(() => {
+export const Navigation: FC<{
+  initialScreen: null | keyof RootNavigationParamsMap
+}> = observer(({ initialScreen }) => {
   const navigationService =
     useInjection<INavigationService>(NavigationServiceId)
   const navigationRef = useNavigationContainerRef<TRoutes>()
-  const { initialScreen } = useInitialScreenAdapter()
   const { setNavigationReady } = useNavigationReadyAdapter()
 
   const onReady = useCallback(() => {
@@ -26,11 +29,9 @@ export const Navigation = observer(() => {
     setNavigationReady()
   }, [navigationRef, navigationService, setNavigationReady])
 
-  return (
-    <>
-      <NavigationContainer ref={navigationRef} onReady={onReady}>
-        {initialScreen && <RootNavigation initialScreen={initialScreen} />}
-      </NavigationContainer>
-    </>
-  )
+  return initialScreen ? (
+    <NavigationContainer fallback={null} ref={navigationRef} onReady={onReady}>
+      <RootNavigation initialScreen={initialScreen} />
+    </NavigationContainer>
+  ) : null
 })

@@ -100,14 +100,14 @@ export class RNCCommandsController implements IRNCCommandsController {
     return inquirer
       .prompt([
         {
-          name: 'commands',
+          name: 'variants',
           message: 'Commands to install',
           type: 'list',
           choices: this.commandsChoices,
           pageSize: Object.keys(ECommands).length + 3,
         },
       ])
-      .then(res => res.commands)
+      .then(res => res.variants)
   }
 
   get commandsChoices() {

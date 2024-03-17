@@ -29,6 +29,11 @@ import {
   ComponentCommandsId,
   IComponentCommands,
 } from './Commands/ComponentCommands'
+import {
+  INavigationsSyncGenerator,
+  NavigationsSyncGenerator,
+  NavigationsSyncGeneratorId,
+} from '../RNCGeneratorsController/NavigationsSync'
 
 export const bindCommands = (container: Container) => {
   container
@@ -41,4 +46,7 @@ export const bindCommands = (container: Container) => {
     .bind<IRepositoryCommands>(RepositoryCommandsId)
     .to(RepositoryCommands)
   container.bind<IComponentCommands>(ComponentCommandsId).to(ComponentCommands)
+  container
+    .bind<INavigationsSyncGenerator>(NavigationsSyncGeneratorId)
+    .to(NavigationsSyncGenerator)
 }

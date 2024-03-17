@@ -2,8 +2,6 @@ import chalk from 'chalk'
 import inquirer from 'inquirer'
 import shell from 'shelljs'
 import { inject, injectable } from 'inversify'
-
-import { BaseId, IBase } from '../Base'
 import { ECliVariants, ICliController } from './types'
 import { IValidators, ValidatorsId } from '../Validators'
 import { IRNCBaseController, RNCBaseControllerId } from '../RNCBaseController'
@@ -27,7 +25,6 @@ export const CliControllerId = Symbol('CliControllerId')
 export class CliController implements ICliController {
   constructor(
     @inject(ValidatorsId) private validators: IValidators,
-    @inject(BaseId) private base: IBase,
     @inject(RNCBaseControllerId) private RNCBaseController: IRNCBaseController,
     @inject(RNCGeneratorsControllerId)
     private RNCGeneratorsController: IRNCGeneratorsController,
@@ -51,15 +48,15 @@ export class CliController implements ICliController {
     [ECliVariants.Generators]: ['generators', 'generator', 'g', 'gen'],
   }
 
-  rnc(options: string[]) {
-    return this.initializationCheck(() => {
-      return this.getChoosedVariant(options).then(variant => {
-        return this.calls[variant]()
-      })
-    })
+  async rnc() {
+    await this.initializationCheck()
+
+    const variant = await this.getChoosedVariant([])
+
+    await this.calls[variant]()
   }
 
-  async initializationCheck(call: () => void) {
+  async initializationCheck() {
     if (this.validators.isRNProject) {
       if (!this.validators.isProjectInitialized) {
         const { confirmToIninit } = await inquirer.prompt([
@@ -72,15 +69,13 @@ export class CliController implements ICliController {
 
         if (confirmToIninit) {
           await this.RNCBaseController.init()
-          shell.exit()
-        } else {
-          shell.exit()
         }
-      }
 
-      call()
+        shell.exit()
+      }
     } else {
       console.log(chalk.red('ERROR: Not react native project'))
+      shell.exit()
     }
   }
 

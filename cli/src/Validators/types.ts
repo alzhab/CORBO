@@ -5,7 +5,6 @@ export interface IValidators {
   isNetworkModuleInitialized: boolean
   isMockModuleInitialized: boolean
   isSpacingPropsModuleInitialized: boolean
-  isBootModuleInitialized: boolean
   isLocalizationModuleInitialized: boolean
   getIsDependenciesExist(list: string[]): boolean
   getValidName(data: IValidNameData): Promise<IValidName>
@@ -16,6 +15,7 @@ export interface IValidators {
     checkNameEnd?: string,
   ): Promise<IValidName[]>
   getComponentsNames(paramName?: string | string[]): Promise<string[]>
+  getFileName(splittedWords: string[], suffix?: string): string
 }
 
 export interface IValidName {

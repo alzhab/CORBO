@@ -1,10 +1,10 @@
 import { ICreateFileInProject } from '../../../Base'
+import { ITemplateProps } from '../../../types'
 import {
   COMPONENT_FILE_TEMPLATE,
   COMPONENT_INDEX_TEMPLATE,
   COMPONENT_TYPE_TEMPLATE,
-} from '../../../../templates/Commands/ComponentCommands/constants'
-import { ITemplateProps } from '../../../types'
+} from './templates'
 
 export const COMPONENT_FOLDER_PATH = '/src/ui/components'
 

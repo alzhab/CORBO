@@ -1,4 +1,4 @@
-import {IBaseFlow} from 'base/root-flow';
+import { IBaseFlow } from '@corrbo/base/IOC'
 
 export type IAppState = IBaseFlow & {}
 

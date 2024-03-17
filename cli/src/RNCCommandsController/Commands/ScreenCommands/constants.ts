@@ -1,6 +1,6 @@
 import { IValidName } from '../../../Validators'
 import { ICreateFileInProject } from '../../../Base'
-import { SCREEN_FILE } from '../../../../templates/Commands/ScreenCommands/constants'
+import { SCREEN_FILE } from './templates'
 
 export const SCREEN_FOLDER_PATH = '/src/ui/screens'
 

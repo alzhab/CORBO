@@ -1,21 +1,13 @@
 import { inject, injectable } from 'inversify'
 import { EModules, IRNCModulesController } from './types'
 import { IValidators, ValidatorsId } from '../Validators'
-import { IRNCBaseController, RNCBaseControllerId } from '../RNCBaseController'
 import { IThemeModule, ThemeModuleId } from './Modules/ThemeModule'
-import { AppIconModuleId, IAppIconModule } from './Modules/AppIconModule'
-import {
-  ISplashScreenModule,
-  SplashScreenModuleId,
-} from './Modules/SplashScreenModule'
 import inquirer from 'inquirer'
 import { INetworkModule, NetworkModuleId } from './Modules/NetworkModule'
-import { IconsModuleId, IIconsModule } from './Modules/IconsModule'
 import {
   ISpacingPropsModule,
   SpacingPropsModuleId,
 } from './Modules/SpacingPropsModule'
-import { BootModuleId, IBootModule } from './Modules/BootModule'
 import {
   ILocalizationModule,
   LocalizationModuleId,
@@ -27,44 +19,26 @@ export const RNCModulesControllerId = Symbol.for('RncModulesController')
 export class RNCmodulesController implements IRNCModulesController {
   constructor(
     @inject(ValidatorsId) private validators: IValidators,
-    @inject(RNCBaseControllerId) private RNCBaseController: IRNCBaseController,
     @inject(ThemeModuleId) private ThemeModule: IThemeModule,
-    @inject(AppIconModuleId) private AppIconModule: IAppIconModule,
-    @inject(SplashScreenModuleId)
-    private SplashScreenModule: ISplashScreenModule,
     @inject(NetworkModuleId)
     private NetworkModule: INetworkModule,
-    @inject(IconsModuleId)
-    private IconsModule: IIconsModule,
     @inject(SpacingPropsModuleId)
     private SpacingPropsModule: ISpacingPropsModule,
-    @inject(BootModuleId) private BootModule: IBootModule,
     @inject(LocalizationModuleId)
     private LocalizationModule: ILocalizationModule,
   ) {}
+
   modules: { [key in EModules]: () => Promise<void> } = {
     [EModules.Theme]: () => this.ThemeModule.init(),
-    [EModules.AppIcon]: () => this.AppIconModule.init(),
-    [EModules.SplashScreen]: () => this.SplashScreenModule.init(),
     [EModules.Network]: () => this.NetworkModule.init(),
-    [EModules.Mock]: () => this.NetworkModule.installMockModule(),
-    [EModules.Icons]: () => this.IconsModule.init(),
     [EModules.SpacingProps]: () => this.SpacingPropsModule.init(),
-    [EModules.Boot]: () => this.BootModule.init(),
     [EModules.Localization]: () => this.LocalizationModule.init(),
   }
 
   disabledModules: { [key in EModules]: boolean } = {
     [EModules.Theme]: this.validators.isThemeModuleInitialized,
-    [EModules.AppIcon]: false,
-    [EModules.SplashScreen]: false,
     [EModules.Network]: this.validators.isNetworkModuleInitialized,
-    [EModules.Mock]:
-      !this.validators.isNetworkModuleInitialized ||
-      this.validators.isMockModuleInitialized,
-    [EModules.Icons]: false,
     [EModules.SpacingProps]: this.validators.isSpacingPropsModuleInitialized,
-    [EModules.Boot]: this.validators.isBootModuleInitialized,
     [EModules.Localization]: this.validators.isLocalizationModuleInitialized,
   }
 
@@ -90,14 +64,14 @@ export class RNCmodulesController implements IRNCModulesController {
     return inquirer
       .prompt([
         {
-          name: 'modules',
+          name: 'variants',
           message: 'Modules to install',
           type: 'checkbox',
           choices,
           pageSize,
         },
       ])
-      .then(res => res.modules)
+      .then(res => res.variants)
   }
 
   get modulesChoices() {

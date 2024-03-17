@@ -4,8 +4,8 @@ export const RNCBASE_TEMPLATE_PATH = './templates/Base'
 
 export const RNCBASE_DEPENDENCIES = [
   '@corrbo/base',
-  '@corrbo/modules-navigation',
-  '@corrbo/modules-localstorage',
+  '@corrbo/module-navigation',
+  '@corrbo/module-localstorage',
   '@react-native-async-storage/async-storage',
   '@react-navigation/native',
   '@react-navigation/stack',

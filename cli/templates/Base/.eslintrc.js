@@ -1,5 +1,5 @@
 module.exports = {
-	root: true,
+	root: !0,
 	extends: ['@react-native/eslint-config'],
 	parser: '@typescript-eslint/parser',
 	plugins: ['@typescript-eslint'],
@@ -13,7 +13,5 @@ module.exports = {
 			},
 		},
 	],
-	rules: {
-		semi: 'off',
-	},
+	rules: { semi: 'off' },
 }

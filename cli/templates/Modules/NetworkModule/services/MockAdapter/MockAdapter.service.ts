@@ -9,7 +9,7 @@ import {
   AppEventsActionsId,
   IAppEventsActions,
 } from '@corrbo/base/AppEventsModule'
-import { EFlowEvents } from 'base/root-flow'
+import { EFlowEvents } from 'Base/root-flow'
 
 export const MockAdapterId = Symbol.for('MockAdapter')
 

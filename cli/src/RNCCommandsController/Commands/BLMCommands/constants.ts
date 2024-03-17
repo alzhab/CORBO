@@ -2,20 +2,20 @@ import {
   ICreateFileInProject,
   IInsertoIntoProjectFileParams,
 } from '../../../Base'
+
+import { ITemplateProps } from '../../../types'
 import {
   ACTION_TEMPLATE,
-  TYPES_TEMPLATE,
   BINDER_FILE_TEMPLATE,
-  BLM_INDEX_TEMPLATE,
-  STORE_TEMPLATE,
-  UI_ADAPTER_TEMPLATE,
   FLOW_TEMPLATE,
   FLOW_TYPES_TEMPLATE,
-} from '../../../../templates/Commands/BlmCommands/constants'
-import { ITemplateProps } from '../../../types'
+  STORE_TEMPLATE,
+  TYPES_TEMPLATE,
+  UI_ADAPTER_TEMPLATE,
+} from './templates'
 
-export const BLM_FOLDER_PATH = '/src/blm'
-export const ROOT_FLOW_PATH = '/src/instruments/base/root-flow'
+export const BLM_FOLDER_PATH = '/src/blms'
+export const ROOT_FLOW_PATH = '/src/instruments/Base/root-flow'
 
 export const BLM_CREATE_FILES: (
   data: ITemplateProps,
@@ -23,10 +23,6 @@ export const BLM_CREATE_FILES: (
   {
     path: data.folderPath + '/binder.ts',
     content: BINDER_FILE_TEMPLATE(data),
-  },
-  {
-    path: data.folderPath + '/index.ts',
-    content: BLM_INDEX_TEMPLATE(),
   },
   {
     path: data.folderPath + '/actions/index.ts',
@@ -42,7 +38,7 @@ export const BLM_CREATE_FILES: (
   },
   {
     path: data.folderPath + '/flow/types.ts',
-    content: "import { IBaseFlow } from 'base/root-flow'",
+    content: "import { IBaseFlow } from 'Base/root-flow'",
   },
   {
     path: data.folderPath + '/store/index.ts',

@@ -1,10 +1,15 @@
-import {inject, injectable} from 'inversify';
-import {IFlowReactions} from 'base/root-flow';
-import {EAppStateFlowEvents, IAppState} from 'blm/NetworkStateBlm';
-import {RootNavigationParamsMap} from 'navigations/RootNavigation';
-import {IInitialRouteActions, InitialRouteActionsId} from '@corrbo/base/Navigation/blm/actions';
+import { inject, injectable } from 'inversify'
+import { EAppStateFlowEvents, IAppState } from '../flow'
+import { RootNavigationParamsMap } from 'navigations/RootNavigation'
+import {
+  IInitialRouteActions,
+  InitialRouteActionsId,
+} from '@corrbo/module-navigation/blm/actions'
+import { EVENT_EMITTER } from '@corrbo/base/IOC/IOCProvider'
+import { IFlowReactions } from '../../types'
 
 export const AppStateFlowId = Symbol.for('AppStateFlow')
+EVENT_EMITTER.addFlowId(AppStateFlowId)
 
 @injectable()
 export class AppStateFlow implements IAppState {
@@ -26,6 +31,4 @@ export class AppStateFlow implements IAppState {
   get screen(): keyof RootNavigationParamsMap {
     return 'HomeScreen'
   }
-
- 
 }

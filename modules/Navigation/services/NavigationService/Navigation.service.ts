@@ -3,11 +3,11 @@ import { RefObject } from 'react'
 import {
   CommonActions,
   NavigationContainerRef,
+  NavigationProp,
   StackActions,
 } from '@react-navigation/native'
 import { INavigationService } from './types'
 import { TRoutes } from 'navigations/types'
-import { NavigationProp } from '@react-navigation/core/lib/typescript/src/types'
 
 export const NavigationServiceId = Symbol.for('INavigationService')
 
@@ -83,5 +83,13 @@ export class NavigationService implements INavigationService {
   get currentScreen() {
     return this._navigationRef?.current?.getState().routes[0]
       .name as keyof TRoutes
+  }
+  
+  pop(): void {
+    if (this._navigationRef && this._navigationRef.current) {
+      this._navigationRef.current.dispatch(
+        StackActions.pop()
+      )
+    }
   }
 }
